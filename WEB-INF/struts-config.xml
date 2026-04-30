@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts-config PUBLIC
+ "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN"
+ "http://struts.apache.org/dtds/struts-config_1_3.dtd">
+
+<struts-config>
+
+  <form-beans>
+  </form-beans>
+
+  <action-mappings>
+
+    <!-- View Products -->
+    <action path="/products"
+            type="com.project.action.ProductAction">
+      <forward name="success" path="/products.jsp"/>
+    </action>
+
+    <!-- Add Product -->
+    <action path="/addProduct"
+            type="com.project.action.AddProductAction">
+      <forward name="success" path="/products.jsp"/>
+    </action>
+
+    <!-- Edit Product (load data into form) -->
+    <action path="/editProduct"
+            type="com.project.action.EditProductAction">
+      <forward name="success" path="/editProduct.jsp"/>
+    </action>
+
+    <!-- Update Product -->
+    <action path="/updateProduct"
+            type="com.project.action.UpdateProductAction">
+      <forward name="success" path="/products.jsp"/>
+    </action>
+
+    <!-- Delete Product -->
+    <action path="/deleteProduct"
+            type="com.project.action.DeleteProductAction">
+      <forward name="success" path="/products.jsp"/>
+    </action>
+
+  </action-mappings>
+
+</struts-config>
