@@ -1,5 +1,10 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.*, com.project.model.Product" %>
+<%
+    String toastTitle = (String) request.getAttribute("toastTitle");
+    String toastMessage = (String) request.getAttribute("toastMessage");
+    String toastType = (String) request.getAttribute("toastType");
+%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,6 +31,10 @@
 
         *{box-sizing:border-box}
 
+        html{
+            scroll-behavior:smooth;
+        }
+
         html,body{
             margin:0;
             min-height:100%;
@@ -36,11 +45,17 @@
             color:var(--text);
             font-family: Arial, Helvetica, sans-serif;
             overflow-x:hidden;
+            overscroll-behavior-y:contain;
         }
+
+        *::-webkit-scrollbar{width:10px;height:10px}
+        *::-webkit-scrollbar-track{background:rgba(255,255,255,.04)}
+        *::-webkit-scrollbar-thumb{background:rgba(91,140,255,.35);border-radius:999px}
+        *::-webkit-scrollbar-thumb:hover{background:rgba(91,140,255,.50)}
 
         .page{
             min-height:100vh;
-            padding:18px;
+            padding:16px;
             display:flex;
             justify-content:center;
             align-items:flex-start;
@@ -54,7 +69,7 @@
             box-shadow:var(--shadow);
             backdrop-filter:blur(18px);
             overflow:hidden;
-            animation:fadeUp .35s ease;
+            animation:fadeUp .28s ease;
         }
 
         @keyframes fadeUp{
@@ -78,7 +93,7 @@
 
         .hero h1{
             margin:0;
-            font-size:clamp(24px, 3vw, 36px);
+            font-size:clamp(22px, 3vw, 36px);
             letter-spacing:-.03em;
             line-height:1.1;
         }
@@ -87,7 +102,7 @@
             margin:7px 0 0;
             color:rgba(237,243,255,.72);
             font-size:14px;
-            line-height:1.55;
+            line-height:1.5;
             max-width:64ch;
         }
 
@@ -193,7 +208,7 @@
 
         .list-head{
             display:grid;
-            grid-template-columns:72px 1.2fr 150px 240px;
+            grid-template-columns:72px minmax(0,1.2fr) 150px 240px;
             gap:10px;
             align-items:center;
             padding:10px 14px;
@@ -215,12 +230,12 @@
 
         .item{
             display:grid;
-            grid-template-columns:72px 1.2fr 150px 240px;
+            grid-template-columns:72px minmax(0,1.2fr) 150px 240px;
             gap:10px;
             align-items:center;
             padding:12px 14px;
             border-top:1px solid rgba(255,255,255,.08);
-            transition:background .15s ease, transform .15s ease;
+            transition:background .15s ease;
         }
 
         .item:first-child{border-top:none}
@@ -244,8 +259,11 @@
             font-size:15px;
             font-weight:800;
             color:#fff;
-            line-height:1.25;
-            word-break:break-word;
+            line-height:1.2;
+            min-width:0;
+            overflow:hidden;
+            text-overflow:ellipsis;
+            white-space:nowrap;
         }
 
         .price{
@@ -319,7 +337,6 @@
             font-size:12px;
         }
 
-        /* modal */
         .modal-overlay{
             position:fixed;
             inset:0;
@@ -359,10 +376,7 @@
             opacity:1;
         }
 
-        .modal-overlay.closing{
-            opacity:0;
-        }
-
+        .modal-overlay.closing{opacity:0}
         .modal-overlay.closing .modal{
             transform:translateY(14px) scale(.95);
             opacity:0;
@@ -425,7 +439,6 @@
         .modal-cancel{background:rgba(255,255,255,.08); color:#eff6ff}
         .modal-confirm{background:linear-gradient(135deg,#ef4444,#f97316); color:#fff}
 
-        /* toast */
         .toast{
             position:fixed;
             bottom:16px;
@@ -477,7 +490,7 @@
             .hero{align-items:flex-start}
             .toolbar{grid-template-columns:1fr}
             .list-head, .item{
-                grid-template-columns:62px 1fr 128px 188px;
+                grid-template-columns:62px minmax(0,1fr) 128px 188px;
             }
             .name{font-size:14px}
         }
@@ -485,44 +498,43 @@
         @media (max-width: 640px){
             .page{padding:10px}
             .shell{border-radius:20px}
-            .topbar{padding:16px 16px 14px}
-            .content{padding:14px 14px 16px}
-            .hero h1{font-size:22px}
-            .hero p{font-size:13px; margin-top:5px}
+            .topbar{padding:14px 14px 12px}
+            .content{padding:12px 12px 14px}
+            .hero h1{font-size:21px}
+            .hero p{font-size:12px; margin-top:5px}
             .top-actions{width:100%}
             .top-actions .btn{flex:1 1 0; padding:10px 12px; font-size:12px}
             .summary{display:none}
             .list-head{
-                display:grid;
-                grid-template-columns:54px 1fr 98px 112px;
+                grid-template-columns:46px minmax(0,1fr) 88px 104px;
                 padding:8px 10px;
                 font-size:11px;
                 letter-spacing:.5px;
             }
             .item{
-                grid-template-columns:54px 1fr 98px 112px;
+                grid-template-columns:46px minmax(0,1fr) 88px 104px;
                 padding:10px 10px;
-                gap:8px;
+                gap:6px;
             }
-            .id-badge{width:46px; height:32px; border-radius:10px; font-size:12px}
-            .price{font-size:13px}
-            .btn-edit,.btn-delete{padding:7px 9px; min-height:32px; font-size:11px; border-radius:10px}
-            .actions{justify-content:flex-end; gap:6px}
-            .footer{padding:10px 14px 14px; justify-content:center; text-align:center}
+            .id-badge{width:40px; height:30px; border-radius:10px; font-size:12px}
+            .name{font-size:12px}
+            .price{font-size:12px}
+            .btn-edit,.btn-delete{padding:7px 8px; min-height:30px; font-size:10px; border-radius:10px}
+            .actions{justify-content:flex-end; gap:6px; flex-wrap:nowrap}
+            .footer{padding:10px 12px 12px; justify-content:center; text-align:center}
             .toast{left:10px; right:10px; bottom:10px; min-width:0}
         }
 
         @media (max-width: 420px){
             .list-head, .item{
-                grid-template-columns:46px 1fr 86px 92px;
-                gap:6px;
+                grid-template-columns:42px minmax(0,1fr) 78px 92px;
+                gap:5px;
             }
-            .hero h1{font-size:21px}
-            .hero p{font-size:12px}
+            .hero h1{font-size:20px}
+            .hero p{font-size:11px}
             .btn{min-height:40px}
             .top-actions .btn{font-size:11px}
-            .name{font-size:13px}
-            .price{font-size:12px}
+            .btn-edit,.btn-delete{padding:7px 7px}
         }
     </style>
 </head>
@@ -535,7 +547,7 @@
             <div class="hero">
                 <div>
                     <h1>Product List</h1>
-                    <p>Manage products in this Centralized Dashboard</p>
+                    <p>Manage products in this centralized dashboard.</p>
                 </div>
                 <div class="top-actions">
                     <a class="btn btn-home" href="index.jsp">Home</a>
@@ -581,13 +593,11 @@
                     if (list != null && !list.isEmpty()) {
                         for (Product p : list) {
                 %>
-                    <div class="item" id="row-<%= p.getId() %>"
-                         data-name="<%= p.getName().toLowerCase() %>"
-                         data-price="<%= p.getPrice() %>">
-                        <div class="id-badge" data-label="ID"><%= p.getId() %></div>
-                        <div class="name" data-label="Product"><%= p.getName() %></div>
-                        <div class="price" data-label="Price"><span class="sym">₹</span><span><%= p.getPrice() %></span></div>
-                        <div class="actions" data-label="Actions">
+                    <div class="item" id="row-<%= p.getId() %>" data-name="<%= p.getName().toLowerCase() %>" data-price="<%= p.getPrice() %>">
+                        <div class="id-badge"><%= p.getId() %></div>
+                        <div class="name"><%= p.getName() %></div>
+                        <div class="price"><span class="sym">₹</span><span><%= p.getPrice() %></span></div>
+                        <div class="actions">
                             <a class="btn btn-edit" href="editProduct.do?id=<%= p.getId() %>">Edit</a>
                             <a class="btn btn-delete" href="#" onclick="openDeleteModal('<%= p.getId() %>'); return false;">Delete</a>
                         </div>
@@ -643,6 +653,9 @@
     const toastTitle = document.getElementById('toastTitle');
     const toastText = document.getElementById('toastText');
 
+    const serverToastTitle = "<%= toastTitle != null ? toastTitle : "" %>";
+    const serverToastMessage = "<%= toastMessage != null ? toastMessage : "" %>";
+    const serverToastType = "<%= toastType != null ? toastType : "" %>";
     let toastTimer = null;
 
     function showToast(title, message, type) {
@@ -685,7 +698,7 @@
                 setTimeout(() => row.remove(), 220);
             }
 
-            showToast('Deleted', 'Product removed successfully.', 'success');
+            showToast('Deleted', 'Product deleted successfully.', 'success');
             closeDeleteModal();
             updateStats();
             checkEmptyState();
@@ -786,6 +799,10 @@
 
         updateStats();
         filterProducts();
+
+        if (serverToastTitle) {
+            showToast(serverToastTitle, serverToastMessage, serverToastType || 'success');
+        }
     });
 </script>
 </body>

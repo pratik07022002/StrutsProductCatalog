@@ -292,7 +292,7 @@
         <div class="content">
             <div class="form-shell">
                 <p class="hint">
-                    Add a new product to your shared catalog. The data will be stored in MySQL, so everyone on the same network sees the updated list after refresh.
+                    Add a new product to the catalog. The data will be stored in Database.
                 </p>
 
                 <form action="addProduct.do" method="post" onsubmit="showLoader()">
@@ -331,7 +331,7 @@
                 </form>
 
                 <div class="page-note">
-                    Tip: use a short, clear product name and a valid numeric price. Invalid values will be rejected by the browser and the server.
+                    Tip: use a short, clear product name and a valid numeric price. Invalid values will be rejected by the system.
                 </div>
             </div>
         </div>
