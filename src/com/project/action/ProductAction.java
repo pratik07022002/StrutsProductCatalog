@@ -4,8 +4,10 @@ import javax.servlet.http.*;
 import org.apache.struts.action.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.Connection;
 
 import com.project.model.Product;
+import com.project.util.DBConnection;
 
 public class ProductAction extends Action {
 
@@ -15,6 +17,16 @@ public class ProductAction extends Action {
                                  HttpServletRequest request,
                                  HttpServletResponse response) {
 
+        // ✅ DB CONNECTION TEST
+        Connection con = DBConnection.getConnection();
+
+        if (con == null) {
+            System.out.println("DB Connection FAILED");
+        } else {
+            System.out.println("DB Connection SUCCESS");
+        }
+
+        // existing session logic (temporary)
         HttpSession session = request.getSession();
 
         List<Product> list = (List<Product>) session.getAttribute("products");
