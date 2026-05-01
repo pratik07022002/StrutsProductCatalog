@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product List</title>
+
     <style>
         :root{
             --bg1:#07111f;
@@ -53,6 +54,12 @@
             box-shadow: var(--shadow);
             backdrop-filter: blur(18px);
             overflow: hidden;
+            animation: fadeUp .45s ease;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .topbar {
@@ -103,6 +110,10 @@
             transform: translateY(-2px);
         }
 
+        .btn:active {
+            transform: translateY(0) scale(.98);
+        }
+
         .btn-home {
             background: rgba(255,255,255,.06);
             border-color: rgba(255,255,255,.12);
@@ -119,6 +130,10 @@
             box-shadow: 0 14px 30px rgba(34,197,94,.18);
         }
 
+        .btn-add:hover {
+            box-shadow: 0 18px 34px rgba(34,197,94,.24);
+        }
+
         .content {
             padding: 28px;
         }
@@ -128,6 +143,12 @@
             border-radius: 24px;
             border: 1px solid rgba(255,255,255,.10);
             background: rgba(255,255,255,.04);
+            animation: fadeIn .35s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         table {
@@ -154,6 +175,10 @@
             border-top: 1px solid rgba(255,255,255,.08);
             color: #e9f1ff;
             font-size: 15px;
+        }
+
+        tbody tr {
+            transition: background .2s ease, transform .2s ease;
         }
 
         tbody tr:nth-child(even) td {
@@ -183,10 +208,18 @@
             border: 1px solid rgba(79,140,255,.28);
         }
 
+        .btn-edit:hover {
+            background: rgba(79,140,255,.22);
+        }
+
         .btn-delete {
             background: rgba(239,68,68,.14);
             color: #ffd7d7;
             border: 1px solid rgba(239,68,68,.25);
+        }
+
+        .btn-delete:hover {
+            background: rgba(239,68,68,.20);
         }
 
         .empty {
@@ -239,9 +272,10 @@
             animation: spin 1s linear infinite;
         }
 
-        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
 
-        /* Delete modal */
         .modal-overlay {
             position: fixed;
             inset: 0;
@@ -358,10 +392,61 @@
             color: #fff;
         }
 
+        @media (max-width: 768px) {
+            .topbar {
+                padding: 20px;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .bottom-bar {
+                padding: 16px 20px 20px;
+            }
+
+            .title h1 {
+                font-size: 26px;
+            }
+
+            .title p {
+                font-size: 14px;
+            }
+
+            .actions-top {
+                width: 100%;
+            }
+
+            .actions-top .btn {
+                flex: 1 1 0;
+            }
+
+            .row-actions {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .row-actions .btn {
+                width: 100%;
+            }
+
+            .footer-card {
+                text-align: center;
+                justify-content: center;
+            }
+        }
+
         @media (max-width: 640px) {
-            .content, .topbar {
-                padding-left: 20px;
-                padding-right: 20px;
+            .page {
+                padding: 14px;
+            }
+
+            .card {
+                border-radius: 22px;
+            }
+
+            th, td {
+                padding: 14px 12px;
             }
         }
     </style>
@@ -399,7 +484,7 @@
                         if (list != null && !list.isEmpty()) {
                             for (Product p : list) {
                     %>
-                        <tr>
+                        <tr id="row-<%= p.getId() %>">
                             <td><%= p.getId() %></td>
                             <td><%= p.getName() %></td>
                             <td>&#8377; <%= p.getPrice() %></td>
@@ -470,7 +555,6 @@
     function closeDeleteModal() {
         deleteModal.classList.add('closing');
         deleteModal.setAttribute('aria-hidden', 'true');
-
         setTimeout(() => {
             deleteModal.classList.remove('show', 'closing');
         }, 300);

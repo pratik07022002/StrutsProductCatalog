@@ -4,7 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0f172a">
     <title>Add Product</title>
+
     <style>
         :root{
             --bg1:#07111f;
@@ -29,7 +31,7 @@
         }
 
         body {
-            font-family: Inter, Arial, Helvetica, sans-serif;
+            font-family: Arial, Helvetica, sans-serif;
             color: var(--text);
             background:
                 radial-gradient(circle at top left, rgba(79,140,255,.20), transparent 28%),
@@ -52,6 +54,12 @@
             box-shadow: var(--shadow);
             backdrop-filter: blur(18px);
             overflow: hidden;
+            animation: fadeUp .45s ease;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .topbar {
@@ -83,6 +91,13 @@
             border: 1px solid rgba(255,255,255,.08);
         }
 
+        .hint {
+            margin: 0 0 20px;
+            color: rgba(229,238,252,.72);
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
         .field {
             margin-bottom: 18px;
         }
@@ -104,7 +119,7 @@
             background: rgba(7,17,31,.72);
             color: var(--text);
             font-size: 15px;
-            transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease;
+            transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease, background .18s ease;
         }
 
         input::placeholder {
@@ -114,6 +129,7 @@
         input:focus {
             border-color: rgba(125,211,252,.8);
             box-shadow: 0 0 0 4px rgba(79,140,255,.16);
+            background: rgba(7,17,31,.88);
         }
 
         .actions {
@@ -134,17 +150,27 @@
             letter-spacing: .2px;
             border: 1px solid transparent;
             cursor: pointer;
-            transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+            transition: transform .18s ease, box-shadow .18s ease, background .18s ease, opacity .18s ease;
+            font-size: 14px;
+            min-height: 48px;
         }
 
         .btn:hover {
             transform: translateY(-2px);
         }
 
+        .btn:active {
+            transform: translateY(0) scale(.98);
+        }
+
         .btn-save {
             background: linear-gradient(135deg, #22c55e, #2dd4bf);
             color: #07111f;
             box-shadow: 0 14px 30px rgba(34,197,94,.18);
+        }
+
+        .btn-save:hover {
+            box-shadow: 0 18px 34px rgba(34,197,94,.24);
         }
 
         .btn-back {
@@ -155,6 +181,16 @@
 
         .btn-back:hover {
             background: rgba(255,255,255,.10);
+        }
+
+        .btn-list {
+            background: rgba(79,140,255,.16);
+            border-color: rgba(79,140,255,.24);
+            color: #dce9ff;
+        }
+
+        .btn-list:hover {
+            background: rgba(79,140,255,.22);
         }
 
         footer {
@@ -176,6 +212,8 @@
             background: rgba(7, 17, 31, .78);
             backdrop-filter: blur(10px);
             z-index: 9999;
+            opacity: 1;
+            transition: opacity .35s ease;
         }
 
         .spinner {
@@ -187,12 +225,56 @@
             animation: spin 1s linear infinite;
         }
 
-        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
 
-        @media (max-width: 640px) {
+        .page-note {
+            margin-top: 14px;
+            color: rgba(229,238,252,.65);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .card {
+                width: 100%;
+            }
+
             .topbar, .content, footer {
                 padding-left: 20px;
                 padding-right: 20px;
+            }
+
+            .topbar h1 {
+                font-size: 26px;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            footer {
+                text-align: center;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .page {
+                padding: 14px;
+            }
+
+            .card {
+                border-radius: 22px;
+            }
+
+            .form-shell {
+                padding: 18px;
             }
         }
     </style>
@@ -209,22 +291,48 @@
 
         <div class="content">
             <div class="form-shell">
+                <p class="hint">
+                    Add a new product to your shared catalog. The data will be stored in MySQL, so everyone on the same network sees the updated list after refresh.
+                </p>
+
                 <form action="addProduct.do" method="post" onsubmit="showLoader()">
                     <div class="field">
                         <label for="name">Product Name</label>
-                        <input type="text" id="name" name="name" placeholder="Enter product name" required>
+                        <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            placeholder="Enter product name"
+                            maxlength="100"
+                            autocomplete="off"
+                            required
+                        >
                     </div>
 
                     <div class="field">
                         <label for="price">Price</label>
-                        <input type="text" id="price" name="price" placeholder="Enter price" required>
+                        <input
+                            type="number"
+                            id="price"
+                            name="price"
+                            placeholder="Enter price"
+                            min="0"
+                            step="0.01"
+                            inputmode="decimal"
+                            required
+                        >
                     </div>
 
                     <div class="actions">
                         <button class="btn btn-save" type="submit">Add Product</button>
+                        <a class="btn btn-list" href="products.do">View Products</a>
                         <a class="btn btn-back" href="index.jsp">Back to Home</a>
                     </div>
                 </form>
+
+                <div class="page-note">
+                    Tip: use a short, clear product name and a valid numeric price. Invalid values will be rejected by the browser and the server.
+                </div>
             </div>
         </div>
 
@@ -246,7 +354,6 @@
         const loader = document.getElementById('loader');
         loader.style.opacity = '0';
         loader.style.pointerEvents = 'none';
-        loader.style.transition = 'opacity .35s ease';
         setTimeout(() => loader.remove(), 350);
     });
 </script>
