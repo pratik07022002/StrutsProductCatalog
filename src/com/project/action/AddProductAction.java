@@ -5,6 +5,7 @@ import org.apache.struts.action.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 public class AddProductAction extends Action {
 
@@ -12,7 +13,7 @@ public class AddProductAction extends Action {
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm form,
                                  HttpServletRequest request,
-                                 HttpServletResponse response) {
+                                 HttpServletResponse response) throws Exception {
 
         String name = request.getParameter("name");
 
@@ -26,11 +27,12 @@ public class AddProductAction extends Action {
         ProductDAO dao = new ProductDAO();
         dao.addProduct(name, price);
 
-        request.setAttribute("products", dao.getAllProducts());
-        request.setAttribute("toastTitle", "Added");
-        request.setAttribute("toastMessage", "Product added successfully.");
-        request.setAttribute("toastType", "success");
+        HttpSession session = request.getSession();
+        session.setAttribute("toastTitle", "Added");
+        session.setAttribute("toastMessage", "Product added successfully.");
+        session.setAttribute("toastType", "success");
 
-        return mapping.findForward("success");
+        response.sendRedirect("products.do");
+        return null;
     }
 }

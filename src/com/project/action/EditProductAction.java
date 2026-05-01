@@ -28,6 +28,7 @@ public class EditProductAction extends Action {
         request.setAttribute("product", product);
         request.setAttribute("editInfo", "Edit mode active. Update the fields and save the changes.");
 
+        // ✅ forward to edit page (NOT redirect)
         return mapping.findForward("success");
     }
 }

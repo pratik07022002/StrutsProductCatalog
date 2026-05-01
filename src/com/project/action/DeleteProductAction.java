@@ -5,6 +5,7 @@ import org.apache.struts.action.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 public class DeleteProductAction extends Action {
 
@@ -12,7 +13,7 @@ public class DeleteProductAction extends Action {
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm form,
                                  HttpServletRequest request,
-                                 HttpServletResponse response) {
+                                 HttpServletResponse response) throws Exception {
 
         int id = 0;
         try {
@@ -24,11 +25,12 @@ public class DeleteProductAction extends Action {
         ProductDAO dao = new ProductDAO();
         dao.deleteProduct(id);
 
-        request.setAttribute("products", dao.getAllProducts());
-        request.setAttribute("toastTitle", "Deleted");
-        request.setAttribute("toastMessage", "Product deleted successfully.");
-        request.setAttribute("toastType", "success");
+        HttpSession session = request.getSession();
+        session.setAttribute("toastTitle", "Deleted");
+        session.setAttribute("toastMessage", "Product deleted successfully.");
+        session.setAttribute("toastType", "success");
 
-        return mapping.findForward("success");
+        response.sendRedirect("products.do");
+        return null;
     }
 }

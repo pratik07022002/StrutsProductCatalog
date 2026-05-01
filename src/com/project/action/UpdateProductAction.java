@@ -5,6 +5,7 @@ import org.apache.struts.action.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 public class UpdateProductAction extends Action {
 
@@ -12,7 +13,7 @@ public class UpdateProductAction extends Action {
     public ActionForward execute(ActionMapping mapping,
                                  ActionForm form,
                                  HttpServletRequest request,
-                                 HttpServletResponse response) {
+                                 HttpServletResponse response) throws Exception {
 
         int id = 0;
         try {
@@ -33,11 +34,14 @@ public class UpdateProductAction extends Action {
         ProductDAO dao = new ProductDAO();
         dao.updateProduct(id, name, price);
 
-        request.setAttribute("products", dao.getAllProducts());
-        request.setAttribute("toastTitle", "Updated");
-        request.setAttribute("toastMessage", "Product updated successfully.");
-        request.setAttribute("toastType", "success");
+        // ✅ store toast in session (survives redirect)
+        HttpSession session = request.getSession();
+        session.setAttribute("toastTitle", "Updated");
+        session.setAttribute("toastMessage", "Product updated successfully.");
+        session.setAttribute("toastType", "success");
 
-        return mapping.findForward("success");
+        // ✅ redirect to avoid resubmission
+        response.sendRedirect("products.do");
+        return null;
     }
 }
