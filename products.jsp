@@ -5,6 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0f172a">
     <title>Product List</title>
 
     <style>
@@ -104,6 +105,7 @@
             transition: transform .18s ease, box-shadow .18s ease, background .18s ease, opacity .18s ease;
             cursor: pointer;
             font-size: 14px;
+            min-height: 46px;
         }
 
         .btn:hover {
@@ -138,12 +140,71 @@
             padding: 28px;
         }
 
+        .toolbar {
+            display: grid;
+            grid-template-columns: 1.5fr .8fr;
+            gap: 14px;
+            margin-bottom: 18px;
+        }
+
+        .search-box input,
+        .filter-box select {
+            width: 100%;
+            padding: 14px 16px;
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,.12);
+            outline: none;
+            background: rgba(7,17,31,.72);
+            color: var(--text);
+            font-size: 15px;
+            transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease, background .18s ease;
+        }
+
+        .search-box input::placeholder {
+            color: rgba(159,176,203,.70);
+        }
+
+        .search-box input:focus,
+        .filter-box select:focus {
+            border-color: rgba(125,211,252,.8);
+            box-shadow: 0 0 0 4px rgba(79,140,255,.16);
+            background: rgba(7,17,31,.88);
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            margin-bottom: 18px;
+        }
+
+        .stat-card {
+            padding: 16px 18px;
+            border-radius: 20px;
+            background: rgba(255,255,255,.05);
+            border: 1px solid rgba(255,255,255,.08);
+        }
+
+        .stat-label {
+            display: block;
+            color: var(--muted);
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 20px;
+            font-weight: 800;
+            color: #fff;
+        }
+
         .table-shell {
             overflow-x: auto;
             border-radius: 24px;
             border: 1px solid rgba(255,255,255,.10);
             background: rgba(255,255,255,.04);
             animation: fadeIn .35s ease;
+            -webkit-overflow-scrolling: touch;
         }
 
         @keyframes fadeIn {
@@ -286,7 +347,6 @@
             background: rgba(2, 6, 23, .66);
             backdrop-filter: blur(10px);
             z-index: 10000;
-
             opacity: 0;
             visibility: hidden;
             pointer-events: none;
@@ -305,7 +365,6 @@
             background: linear-gradient(180deg, rgba(17,24,39,.96), rgba(15,23,42,.96));
             border: 1px solid rgba(255,255,255,.10);
             box-shadow: 0 30px 80px rgba(0,0,0,.45);
-
             transform: translateY(28px) scale(.92);
             opacity: 0;
             transition: transform .30s cubic-bezier(.2,.8,.2,1), opacity .30s ease;
@@ -392,25 +451,82 @@
             color: #fff;
         }
 
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            min-width: 240px;
+            max-width: min(92vw, 420px);
+            padding: 14px 16px;
+            border-radius: 16px;
+            background: rgba(15, 23, 42, .96);
+            border: 1px solid rgba(255,255,255,.10);
+            color: #fff;
+            box-shadow: 0 18px 50px rgba(0,0,0,.35);
+            opacity: 0;
+            transform: translateY(16px);
+            pointer-events: none;
+            transition: opacity .24s ease, transform .24s ease;
+            z-index: 12000;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .toast.success {
+            border-color: rgba(34,197,94,.35);
+        }
+
+        .toast.error {
+            border-color: rgba(239,68,68,.35);
+        }
+
+        .toast .toast-title {
+            display: block;
+            font-size: 14px;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .toast .toast-text {
+            display: block;
+            font-size: 13px;
+            color: rgba(229,238,252,.78);
+            line-height: 1.5;
+        }
+
+        @media (max-width: 1024px) {
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .toolbar {
+                grid-template-columns: 1fr;
+            }
+        }
+
         @media (max-width: 768px) {
             .topbar {
-                padding: 20px;
+                padding: 18px 18px 16px;
             }
 
             .content {
-                padding: 20px;
+                padding: 16px;
             }
 
             .bottom-bar {
-                padding: 16px 20px 20px;
+                padding: 14px 16px 18px;
             }
 
             .title h1 {
-                font-size: 26px;
+                font-size: 24px;
             }
 
             .title p {
-                font-size: 14px;
+                font-size: 13px;
+                margin-top: 6px;
             }
 
             .actions-top {
@@ -419,34 +535,179 @@
 
             .actions-top .btn {
                 flex: 1 1 0;
+                padding: 11px 14px;
             }
 
-            .row-actions {
-                flex-direction: column;
-                width: 100%;
+            .toolbar {
+                gap: 10px;
+                margin-bottom: 14px;
             }
 
-            .row-actions .btn {
-                width: 100%;
+            .search-box input,
+            .filter-box select {
+                padding: 12px 14px;
+                font-size: 14px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+                gap: 10px;
+                margin-bottom: 14px;
+            }
+
+            .stat-card {
+                padding: 13px 14px;
+                border-radius: 18px;
+            }
+
+            .stat-value {
+                font-size: 18px;
+            }
+
+            .table-shell {
+                border-radius: 20px;
             }
 
             .footer-card {
                 text-align: center;
                 justify-content: center;
             }
+
+            .toast {
+                left: 14px;
+                right: 14px;
+                bottom: 14px;
+                min-width: 0;
+            }
         }
 
         @media (max-width: 640px) {
             .page {
-                padding: 14px;
+                padding: 12px;
             }
 
             .card {
                 border-radius: 22px;
             }
 
-            th, td {
-                padding: 14px 12px;
+            .topbar {
+                gap: 12px;
+            }
+
+            .title {
+                width: 100%;
+            }
+
+            .actions-top {
+                gap: 8px;
+            }
+
+            .actions-top .btn {
+                font-size: 13px;
+            }
+
+            .stats {
+                display: none;
+            }
+
+            .table-shell {
+                background: transparent;
+                border: none;
+                overflow: visible;
+            }
+
+            table {
+                min-width: 0;
+                width: 100%;
+                border-collapse: separate;
+                border-spacing: 0 12px;
+            }
+
+            thead {
+                display: none;
+            }
+
+            tbody {
+                display: block;
+            }
+
+            tbody tr {
+                display: block;
+                background: rgba(255,255,255,.05);
+                border: 1px solid rgba(255,255,255,.08);
+                border-radius: 18px;
+                padding: 12px 12px 6px;
+                margin-bottom: 12px;
+                box-shadow: 0 10px 22px rgba(0,0,0,.18);
+            }
+
+            tbody tr:hover td {
+                background: transparent;
+            }
+
+            tbody tr:nth-child(even) td {
+                background: transparent;
+            }
+
+            td {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 12px;
+                border: none;
+                border-top: 1px solid rgba(255,255,255,.08);
+                padding: 12px 0;
+                text-align: left;
+                font-size: 14px;
+                line-height: 1.45;
+            }
+
+            td:first-child {
+                border-top: none;
+                padding-top: 0;
+            }
+
+            td::before {
+                content: attr(data-label);
+                color: rgba(159,176,203,.92);
+                font-size: 12px;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: .5px;
+                flex: 0 0 auto;
+                margin-right: 10px;
+            }
+
+            td.actions-cell {
+                display: block;
+                padding-bottom: 2px;
+            }
+
+            td.actions-cell::before {
+                display: block;
+                margin: 0 0 10px;
+            }
+
+            .row-actions {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+                width: 100%;
+            }
+
+            .row-actions .btn {
+                width: 100%;
+                padding: 12px 10px;
+            }
+
+            .empty {
+                display: block;
+                text-align: center;
+                padding: 20px 10px;
+            }
+
+            .empty strong {
+                margin-bottom: 6px;
             }
         }
     </style>
@@ -468,8 +729,42 @@
         </div>
 
         <div class="content">
+            <div class="toolbar">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="Search by product name..." onkeyup="filterProducts()">
+                </div>
+                <div class="filter-box">
+                    <select id="sortSelect" onchange="sortProducts()">
+                        <option value="default">Sort</option>
+                        <option value="name-asc">Name A → Z</option>
+                        <option value="name-desc">Name Z → A</option>
+                        <option value="price-asc">Price Low → High</option>
+                        <option value="price-desc">Price High → Low</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="stats">
+                <div class="stat-card">
+                    <span class="stat-label">Total Products</span>
+                    <span class="stat-value" id="totalCount">0</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-label">Visible Products</span>
+                    <span class="stat-value" id="visibleCount">0</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-label">Highest Price</span>
+                    <span class="stat-value" id="highestPrice">₹ 0</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-label">Lowest Price</span>
+                    <span class="stat-value" id="lowestPrice">₹ 0</span>
+                </div>
+            </div>
+
             <div class="table-shell">
-                <table>
+                <table id="productTable">
                     <thead>
                         <tr>
                             <th style="width: 12%;">ID</th>
@@ -478,17 +773,19 @@
                             <th style="width: 30%;">Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="productTableBody">
                     <%
                         ArrayList<Product> list = (ArrayList<Product>) request.getAttribute("products");
                         if (list != null && !list.isEmpty()) {
                             for (Product p : list) {
                     %>
-                        <tr id="row-<%= p.getId() %>">
-                            <td><%= p.getId() %></td>
-                            <td><%= p.getName() %></td>
-                            <td>&#8377; <%= p.getPrice() %></td>
-                            <td>
+                        <tr id="row-<%= p.getId() %>"
+                            data-name="<%= p.getName().toLowerCase() %>"
+                            data-price="<%= p.getPrice() %>">
+                            <td data-label="ID"><%= p.getId() %></td>
+                            <td data-label="Name" class="product-name"><%= p.getName() %></td>
+                            <td data-label="Price" class="product-price">&#8377; <%= p.getPrice() %></td>
+                            <td data-label="Actions" class="actions-cell">
                                 <div class="row-actions">
                                     <a class="btn btn-edit" href="editProduct.do?id=<%= p.getId() %>">Edit</a>
                                     <a class="btn btn-delete" href="#" onclick="openDeleteModal('<%= p.getId() %>'); return false;">Delete</a>
@@ -499,7 +796,7 @@
                             }
                         } else {
                     %>
-                        <tr>
+                        <tr id="emptyRow">
                             <td colspan="4" class="empty">
                                 <strong>No products available</strong>
                                 Start by adding your first product.
@@ -541,9 +838,32 @@
     </div>
 </div>
 
+<div id="toast" class="toast" aria-live="polite" aria-atomic="true">
+    <span class="toast-title" id="toastTitle">Status</span>
+    <span class="toast-text" id="toastText"></span>
+</div>
+
 <script>
     const deleteModal = document.getElementById('deleteModal');
     const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+    const toast = document.getElementById('toast');
+    const toastTitle = document.getElementById('toastTitle');
+    const toastText = document.getElementById('toastText');
+
+    let toastTimer = null;
+    let currentSort = 'default';
+
+    function showToast(title, message, type) {
+        toast.className = 'toast ' + (type || 'success');
+        toastTitle.textContent = title;
+        toastText.textContent = message || '';
+        toast.classList.add('show');
+
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => {
+            toast.classList.remove('show');
+        }, 2600);
+    }
 
     function openDeleteModal(id) {
         confirmDeleteBtn.href = 'deleteProduct.do?id=' + encodeURIComponent(id);
@@ -560,6 +880,46 @@
         }, 300);
     }
 
+    async function deleteProduct(id) {
+        try {
+            const response = await fetch('deleteProduct.do?id=' + encodeURIComponent(id), {
+                method: 'GET',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Delete failed');
+            }
+
+            const row = document.getElementById('row-' + id);
+            if (row) {
+                row.style.transition = 'opacity .25s ease, transform .25s ease';
+                row.style.opacity = '0';
+                row.style.transform = 'translateY(8px)';
+                setTimeout(() => row.remove(), 260);
+            }
+
+            showToast('Deleted', 'Product removed successfully.', 'success');
+            updateStats();
+            closeDeleteModal();
+            checkEmptyState();
+        } catch (e) {
+            showToast('Error', 'Could not delete the product.', 'error');
+        }
+    }
+
+    confirmDeleteBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        const href = confirmDeleteBtn.getAttribute('href');
+        const idMatch = href.match(/id=([^&]+)/);
+        const id = idMatch ? decodeURIComponent(idMatch[1]) : null;
+        if (id) {
+            deleteProduct(id);
+        }
+    });
+
     deleteModal.addEventListener('click', function (e) {
         if (e.target === deleteModal) {
             closeDeleteModal();
@@ -572,12 +932,113 @@
         }
     });
 
+    function filterProducts() {
+        const query = document.getElementById('searchInput').value.toLowerCase().trim();
+        const rows = Array.from(document.querySelectorAll('#productTableBody tr'))
+            .filter(r => r.id !== 'emptyRow');
+
+        let visible = 0;
+
+        rows.forEach(row => {
+            const name = (row.dataset.name || '').toLowerCase();
+            const match = name.includes(query);
+            row.style.display = match ? '' : 'none';
+            if (match) visible++;
+        });
+
+        const emptyRow = document.getElementById('emptyRow');
+        if (emptyRow) {
+            emptyRow.style.display = visible === 0 ? '' : 'none';
+        }
+
+        document.getElementById('visibleCount').textContent = visible;
+    }
+
+    function sortProducts() {
+        currentSort = document.getElementById('sortSelect').value;
+
+        const tbody = document.getElementById('productTableBody');
+        const rows = Array.from(tbody.querySelectorAll('tr')).filter(r => r.id !== 'emptyRow');
+
+        const compareByName = (a, b, asc) => {
+            const av = (a.dataset.name || '').toLowerCase();
+            const bv = (b.dataset.name || '').toLowerCase();
+            return asc ? av.localeCompare(bv) : bv.localeCompare(av);
+        };
+
+        const compareByPrice = (a, b, asc) => {
+            const av = parseFloat(a.dataset.price || '0');
+            const bv = parseFloat(b.dataset.price || '0');
+            return asc ? av - bv : bv - av;
+        };
+
+        if (currentSort === 'name-asc') rows.sort((a, b) => compareByName(a, b, true));
+        if (currentSort === 'name-desc') rows.sort((a, b) => compareByName(a, b, false));
+        if (currentSort === 'price-asc') rows.sort((a, b) => compareByPrice(a, b, true));
+        if (currentSort === 'price-desc') rows.sort((a, b) => compareByPrice(a, b, false));
+
+        rows.forEach(row => tbody.appendChild(row));
+        filterProducts();
+    }
+
+    function updateStats() {
+        const allRows = Array.from(document.querySelectorAll('#productTableBody tr'))
+            .filter(r => r.id !== 'emptyRow' && r.style.display !== 'none');
+
+        const allVisibleRows = Array.from(document.querySelectorAll('#productTableBody tr'))
+            .filter(r => r.id !== 'emptyRow');
+
+        const visibleCount = allRows.length;
+        const totalCount = allVisibleRows.length;
+
+        const prices = allVisibleRows
+            .map(r => parseFloat(r.dataset.price || '0'))
+            .filter(n => !isNaN(n));
+
+        const highest = prices.length ? Math.max(...prices) : 0;
+        const lowest = prices.length ? Math.min(...prices) : 0;
+
+        document.getElementById('totalCount').textContent = totalCount;
+        document.getElementById('visibleCount').textContent = visibleCount;
+        document.getElementById('highestPrice').textContent = '₹ ' + highest.toFixed(2);
+        document.getElementById('lowestPrice').textContent = '₹ ' + lowest.toFixed(2);
+    }
+
+    function checkEmptyState() {
+        const rows = Array.from(document.querySelectorAll('#productTableBody tr'))
+            .filter(r => r.id !== 'emptyRow' && r.style.display !== 'none');
+
+        let emptyRow = document.getElementById('emptyRow');
+
+        if (rows.length === 0) {
+            if (!emptyRow) {
+                const tbody = document.getElementById('productTableBody');
+                emptyRow = document.createElement('tr');
+                emptyRow.id = 'emptyRow';
+                emptyRow.innerHTML = `
+                    <td colspan="4" class="empty">
+                        <strong>No products available</strong>
+                        Start by adding your first product.
+                    </td>
+                `;
+                tbody.appendChild(emptyRow);
+            } else {
+                emptyRow.style.display = '';
+            }
+        } else if (emptyRow) {
+            emptyRow.style.display = 'none';
+        }
+    }
+
     window.addEventListener('load', function () {
         const loader = document.getElementById('loader');
         loader.style.opacity = '0';
         loader.style.pointerEvents = 'none';
         loader.style.transition = 'opacity .35s ease';
         setTimeout(() => loader.remove(), 350);
+
+        updateStats();
+        filterProducts();
     });
 </script>
 </body>
