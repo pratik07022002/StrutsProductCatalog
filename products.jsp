@@ -4,711 +4,525 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#0f172a">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#07111f">
     <title>Product List</title>
 
     <style>
         :root{
-            --bg1:#07111f;
-            --bg2:#0f172a;
-            --card:rgba(15, 23, 42, 0.72);
-            --card-border:rgba(148, 163, 184, 0.18);
-            --text:#e5eefc;
+            --bg1:#06101d;
+            --bg2:#0b1530;
+            --panel:rgba(10, 18, 34, 0.78);
+            --panel-border:rgba(148,163,184,.16);
+            --text:#edf3ff;
             --muted:#9fb0cb;
-            --primary:#4f8cff;
+            --primary:#5b8cff;
             --primary-2:#2dd4bf;
+            --danger:#ff6b6b;
             --success:#22c55e;
-            --danger:#ef4444;
             --shadow:0 24px 60px rgba(0,0,0,.32);
-            --radius:28px;
+            --radius:24px;
         }
 
-        * { box-sizing: border-box; }
+        *{box-sizing:border-box}
 
-        html, body {
-            margin: 0;
-            min-height: 100%;
-        }
-
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            color: var(--text);
+        html,body{
+            margin:0;
+            min-height:100%;
             background:
-                radial-gradient(circle at top left, rgba(79,140,255,.20), transparent 28%),
-                radial-gradient(circle at bottom right, rgba(45,212,191,.14), transparent 25%),
+                radial-gradient(circle at top left, rgba(91,140,255,.16), transparent 28%),
+                radial-gradient(circle at bottom right, rgba(45,212,191,.12), transparent 24%),
                 linear-gradient(160deg, var(--bg1), var(--bg2));
+            color:var(--text);
+            font-family: Arial, Helvetica, sans-serif;
+            overflow-x:hidden;
         }
 
-        .page {
-            min-height: 100vh;
-            display: grid;
-            place-items: center;
-            padding: 28px;
+        .page{
+            min-height:100vh;
+            padding:18px;
+            display:flex;
+            justify-content:center;
+            align-items:flex-start;
         }
 
-        .card {
-            width: min(1280px, 100%);
-            background: var(--card);
-            border: 1px solid var(--card-border);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            backdrop-filter: blur(18px);
-            overflow: hidden;
-            animation: fadeUp .45s ease;
+        .shell{
+            width:min(1180px,100%);
+            background:linear-gradient(180deg, rgba(13,20,38,.92), rgba(8,15,30,.92));
+            border:1px solid var(--panel-border);
+            border-radius:var(--radius);
+            box-shadow:var(--shadow);
+            backdrop-filter:blur(18px);
+            overflow:hidden;
+            animation:fadeUp .35s ease;
         }
 
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(16px); }
-            to { opacity: 1; transform: translateY(0); }
+        @keyframes fadeUp{
+            from{opacity:0; transform:translateY(14px)}
+            to{opacity:1; transform:translateY(0)}
         }
 
-        .topbar {
-            padding: 26px 30px;
-            background: linear-gradient(135deg, rgba(79,140,255,.28), rgba(45,212,191,.18));
-            border-bottom: 1px solid rgba(255,255,255,.08);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 16px;
-            flex-wrap: wrap;
+        .topbar{
+            padding:18px 20px 16px;
+            background:linear-gradient(135deg, rgba(91,140,255,.18), rgba(45,212,191,.12));
+            border-bottom:1px solid rgba(255,255,255,.08);
         }
 
-        .title h1 {
-            margin: 0;
-            font-size: clamp(28px, 3vw, 42px);
-            letter-spacing: -.03em;
+        .hero{
+            display:flex;
+            justify-content:space-between;
+            align-items:flex-end;
+            gap:14px;
+            flex-wrap:wrap;
         }
 
-        .title p {
-            margin: 8px 0 0;
-            color: rgba(229,238,252,.78);
-            line-height: 1.7;
+        .hero h1{
+            margin:0;
+            font-size:clamp(24px, 3vw, 36px);
+            letter-spacing:-.03em;
+            line-height:1.1;
         }
 
-        .actions-top {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
+        .hero p{
+            margin:7px 0 0;
+            color:rgba(237,243,255,.72);
+            font-size:14px;
+            line-height:1.55;
+            max-width:64ch;
         }
 
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 12px 18px;
-            border-radius: 16px;
-            text-decoration: none;
-            font-weight: 800;
-            letter-spacing: .2px;
-            border: 1px solid transparent;
-            transition: transform .18s ease, box-shadow .18s ease, background .18s ease, opacity .18s ease;
-            cursor: pointer;
-            font-size: 14px;
-            min-height: 46px;
+        .top-actions{
+            display:flex;
+            gap:10px;
+            flex-wrap:wrap;
         }
 
-        .btn:hover {
-            transform: translateY(-2px);
+        .btn{
+            display:inline-flex;
+            align-items:center;
+            justify-content:center;
+            min-height:42px;
+            padding:10px 14px;
+            border-radius:14px;
+            border:1px solid transparent;
+            text-decoration:none;
+            font-weight:800;
+            font-size:13px;
+            letter-spacing:.2px;
+            cursor:pointer;
+            transition:transform .16s ease, box-shadow .16s ease, background .16s ease, opacity .16s ease;
+            user-select:none;
+            white-space:nowrap;
         }
 
-        .btn:active {
-            transform: translateY(0) scale(.98);
+        .btn:active{transform:scale(.98)}
+        .btn:hover{transform:translateY(-1px)}
+
+        .btn-home{
+            color:#eef4ff;
+            background:rgba(255,255,255,.05);
+            border-color:rgba(255,255,255,.10);
         }
 
-        .btn-home {
-            background: rgba(255,255,255,.06);
-            border-color: rgba(255,255,255,.12);
-            color: #eff6ff;
+        .btn-home:hover{background:rgba(255,255,255,.08)}
+
+        .btn-add{
+            color:#07111f;
+            background:linear-gradient(135deg, #2dd4bf, #5b8cff);
+            box-shadow:0 10px 24px rgba(91,140,255,.20);
         }
 
-        .btn-home:hover {
-            background: rgba(255,255,255,.10);
+        .content{
+            padding:16px 18px 18px;
         }
 
-        .btn-add {
-            background: linear-gradient(135deg, #22c55e, #2dd4bf);
-            color: #07111f;
-            box-shadow: 0 14px 30px rgba(34,197,94,.18);
-        }
-
-        .btn-add:hover {
-            box-shadow: 0 18px 34px rgba(34,197,94,.24);
-        }
-
-        .content {
-            padding: 28px;
-        }
-
-        .toolbar {
-            display: grid;
-            grid-template-columns: 1.5fr .8fr;
-            gap: 14px;
-            margin-bottom: 18px;
+        .toolbar{
+            display:grid;
+            grid-template-columns:1.45fr .85fr;
+            gap:10px;
+            margin-bottom:12px;
         }
 
         .search-box input,
-        .filter-box select {
-            width: 100%;
-            padding: 14px 16px;
-            border-radius: 16px;
-            border: 1px solid rgba(255,255,255,.12);
-            outline: none;
-            background: rgba(7,17,31,.72);
-            color: var(--text);
-            font-size: 15px;
-            transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease, background .18s ease;
+        .filter-box select{
+            width:100%;
+            min-height:44px;
+            padding:11px 14px;
+            border-radius:14px;
+            border:1px solid rgba(255,255,255,.10);
+            background:rgba(7,16,29,.72);
+            color:var(--text);
+            outline:none;
+            font-size:14px;
+            transition:border-color .16s ease, box-shadow .16s ease, background .16s ease;
         }
 
-        .search-box input::placeholder {
-            color: rgba(159,176,203,.70);
-        }
-
+        .search-box input::placeholder{color:rgba(159,176,203,.70)}
         .search-box input:focus,
-        .filter-box select:focus {
-            border-color: rgba(125,211,252,.8);
-            box-shadow: 0 0 0 4px rgba(79,140,255,.16);
-            background: rgba(7,17,31,.88);
+        .filter-box select:focus{
+            border-color:rgba(91,140,255,.70);
+            box-shadow:0 0 0 4px rgba(91,140,255,.15);
+            background:rgba(7,16,29,.90);
         }
 
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 14px;
-            margin-bottom: 18px;
+        .summary{
+            display:flex;
+            gap:8px;
+            flex-wrap:wrap;
+            margin:0 0 12px;
         }
 
-        .stat-card {
-            padding: 16px 18px;
-            border-radius: 20px;
-            background: rgba(255,255,255,.05);
-            border: 1px solid rgba(255,255,255,.08);
+        .chip{
+            display:inline-flex;
+            align-items:center;
+            gap:8px;
+            padding:9px 12px;
+            border-radius:999px;
+            background:rgba(255,255,255,.05);
+            border:1px solid rgba(255,255,255,.08);
+            color:#eef4ff;
+            font-size:12px;
+            font-weight:800;
+            line-height:1;
         }
 
-        .stat-label {
-            display: block;
-            color: var(--muted);
-            font-size: 13px;
-            margin-bottom: 8px;
+        .chip span{
+            color:var(--muted);
+            font-weight:700;
         }
 
-        .stat-value {
-            font-size: 20px;
-            font-weight: 800;
-            color: #fff;
+        .list-head{
+            display:grid;
+            grid-template-columns:72px 1.2fr 150px 240px;
+            gap:10px;
+            align-items:center;
+            padding:10px 14px;
+            margin-bottom:8px;
+            color:rgba(237,243,255,.78);
+            font-size:12px;
+            font-weight:800;
+            text-transform:uppercase;
+            letter-spacing:.7px;
+            border-bottom:1px solid rgba(255,255,255,.08);
         }
 
-        .table-shell {
-            overflow-x: auto;
-            border-radius: 24px;
-            border: 1px solid rgba(255,255,255,.10);
-            background: rgba(255,255,255,.04);
-            animation: fadeIn .35s ease;
-            -webkit-overflow-scrolling: touch;
+        .list{
+            border:1px solid rgba(255,255,255,.08);
+            border-radius:18px;
+            overflow:hidden;
+            background:rgba(255,255,255,.03);
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        .item{
+            display:grid;
+            grid-template-columns:72px 1.2fr 150px 240px;
+            gap:10px;
+            align-items:center;
+            padding:12px 14px;
+            border-top:1px solid rgba(255,255,255,.08);
+            transition:background .15s ease, transform .15s ease;
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            min-width: 900px;
+        .item:first-child{border-top:none}
+        .item:hover{background:rgba(91,140,255,.08)}
+
+        .id-badge{
+            width:56px;
+            height:36px;
+            border-radius:12px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            background:rgba(255,255,255,.05);
+            border:1px solid rgba(255,255,255,.08);
+            color:#fff;
+            font-weight:800;
+            font-size:14px;
         }
 
-        th, td {
-            padding: 16px 18px;
-            text-align: center;
+        .name{
+            font-size:15px;
+            font-weight:800;
+            color:#fff;
+            line-height:1.25;
+            word-break:break-word;
         }
 
-        th {
-            background: rgba(79,140,255,.16);
-            color: #f8fbff;
-            font-size: 14px;
-            letter-spacing: .35px;
-            text-transform: uppercase;
-            border-bottom: 1px solid rgba(255,255,255,.10);
+        .price{
+            display:inline-flex;
+            justify-content:flex-start;
+            align-items:center;
+            gap:6px;
+            font-size:14px;
+            font-weight:800;
+            color:#edf3ff;
+            white-space:nowrap;
         }
 
-        td {
-            border-top: 1px solid rgba(255,255,255,.08);
-            color: #e9f1ff;
-            font-size: 15px;
+        .price .sym{
+            color:rgba(237,243,255,.9);
+            font-size:15px;
         }
 
-        tbody tr {
-            transition: background .2s ease, transform .2s ease;
+        .actions{
+            display:flex;
+            justify-content:flex-end;
+            gap:8px;
+            flex-wrap:wrap;
         }
 
-        tbody tr:nth-child(even) td {
-            background: rgba(255,255,255,.03);
+        .btn-edit,
+        .btn-delete{
+            min-height:36px;
+            padding:8px 12px;
+            border-radius:12px;
+            font-size:12px;
         }
 
-        tbody tr:hover td {
-            background: rgba(79,140,255,.10);
+        .btn-edit{
+            color:#dce9ff;
+            background:rgba(91,140,255,.16);
+            border:1px solid rgba(91,140,255,.28);
         }
 
-        .row-actions {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            flex-wrap: wrap;
+        .btn-edit:hover{background:rgba(91,140,255,.22)}
+
+        .btn-delete{
+            color:#ffd9d9;
+            background:rgba(239,68,68,.12);
+            border:1px solid rgba(239,68,68,.24);
         }
 
-        .btn-edit, .btn-delete {
-            padding: 10px 14px;
-            border-radius: 14px;
-            font-size: 13px;
+        .btn-delete:hover{background:rgba(239,68,68,.18)}
+
+        .empty{
+            padding:24px 14px;
+            text-align:center;
+            color:rgba(237,243,255,.72);
         }
 
-        .btn-edit {
-            background: rgba(79,140,255,.16);
-            color: #dce9ff;
-            border: 1px solid rgba(79,140,255,.28);
+        .empty strong{
+            display:block;
+            color:#fff;
+            margin-bottom:6px;
+            font-size:16px;
         }
 
-        .btn-edit:hover {
-            background: rgba(79,140,255,.22);
+        .footer{
+            padding:12px 18px 16px;
+            display:flex;
+            justify-content:space-between;
+            gap:10px;
+            flex-wrap:wrap;
+            border-top:1px solid rgba(255,255,255,.08);
+            color:rgba(237,243,255,.68);
+            font-size:12px;
         }
 
-        .btn-delete {
-            background: rgba(239,68,68,.14);
-            color: #ffd7d7;
-            border: 1px solid rgba(239,68,68,.25);
+        /* modal */
+        .modal-overlay{
+            position:fixed;
+            inset:0;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            padding:16px;
+            background:rgba(2,6,23,.68);
+            backdrop-filter:blur(10px);
+            z-index:10000;
+            opacity:0;
+            visibility:hidden;
+            pointer-events:none;
+            transition:opacity .22s ease, visibility .22s ease;
         }
 
-        .btn-delete:hover {
-            background: rgba(239,68,68,.20);
+        .modal-overlay.show{
+            opacity:1;
+            visibility:visible;
+            pointer-events:auto;
         }
 
-        .empty {
-            padding: 30px;
-            color: rgba(229,238,252,.72);
-            text-align: center;
+        .modal{
+            width:min(420px,100%);
+            border-radius:22px;
+            background:linear-gradient(180deg, rgba(17,24,39,.97), rgba(15,23,42,.97));
+            border:1px solid rgba(255,255,255,.10);
+            box-shadow:0 24px 70px rgba(0,0,0,.45);
+            transform:translateY(18px) scale(.95);
+            opacity:0;
+            transition:transform .25s ease, opacity .25s ease;
+            overflow:hidden;
         }
 
-        .empty strong {
-            display: block;
-            margin-bottom: 8px;
-            color: #fff;
-            font-size: 18px;
+        .modal-overlay.show .modal{
+            transform:translateY(0) scale(1);
+            opacity:1;
         }
 
-        .bottom-bar {
-            display: flex;
-            justify-content: center;
-            padding: 20px 28px 28px;
+        .modal-overlay.closing{
+            opacity:0;
         }
 
-        .footer-card {
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            gap: 12px;
-            flex-wrap: wrap;
-            color: rgba(229,238,252,.72);
-            font-size: 13px;
-            padding-top: 18px;
-            border-top: 1px solid rgba(255,255,255,.08);
+        .modal-overlay.closing .modal{
+            transform:translateY(14px) scale(.95);
+            opacity:0;
         }
 
-        .loader {
-            position: fixed;
-            inset: 0;
-            display: grid;
-            place-items: center;
-            background: rgba(7, 17, 31, .78);
-            backdrop-filter: blur(10px);
-            z-index: 9999;
+        .modal-top{
+            padding:18px 18px 10px;
+            display:flex;
+            align-items:center;
+            gap:12px;
         }
 
-        .spinner {
-            width: 54px;
-            height: 54px;
-            border-radius: 50%;
-            border: 5px solid rgba(255,255,255,.16);
-            border-top-color: #7dd3fc;
-            animation: spin 1s linear infinite;
+        .warn{
+            width:42px;
+            height:42px;
+            border-radius:14px;
+            display:grid;
+            place-items:center;
+            background:rgba(239,68,68,.14);
+            border:1px solid rgba(239,68,68,.24);
+            color:#fecaca;
+            font-size:20px;
+            flex:0 0 auto;
         }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        .modal-top h3{
+            margin:0;
+            font-size:18px;
         }
 
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            background: rgba(2, 6, 23, .66);
-            backdrop-filter: blur(10px);
-            z-index: 10000;
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-            transition: opacity .28s ease, visibility .28s ease;
+        .modal-body{
+            padding:0 18px 18px;
+            color:rgba(237,243,255,.78);
+            line-height:1.6;
+            font-size:14px;
         }
 
-        .modal-overlay.show {
-            opacity: 1;
-            visibility: visible;
-            pointer-events: auto;
+        .modal-actions{
+            display:flex;
+            gap:10px;
+            justify-content:flex-end;
+            padding:0 18px 18px;
+            flex-wrap:wrap;
         }
 
-        .modal {
-            width: min(460px, 100%);
-            border-radius: 24px;
-            background: linear-gradient(180deg, rgba(17,24,39,.96), rgba(15,23,42,.96));
-            border: 1px solid rgba(255,255,255,.10);
-            box-shadow: 0 30px 80px rgba(0,0,0,.45);
-            transform: translateY(28px) scale(.92);
-            opacity: 0;
-            transition: transform .30s cubic-bezier(.2,.8,.2,1), opacity .30s ease;
-            overflow: hidden;
+        .modal-btn{
+            border:none;
+            border-radius:12px;
+            padding:10px 14px;
+            font-weight:800;
+            cursor:pointer;
+            text-decoration:none;
+            display:inline-flex;
+            align-items:center;
+            justify-content:center;
+            transition:transform .15s ease, opacity .15s ease;
         }
 
-        .modal-overlay.show .modal {
-            transform: translateY(0) scale(1);
-            opacity: 1;
+        .modal-btn:hover{transform:translateY(-1px)}
+        .modal-cancel{background:rgba(255,255,255,.08); color:#eff6ff}
+        .modal-confirm{background:linear-gradient(135deg,#ef4444,#f97316); color:#fff}
+
+        /* toast */
+        .toast{
+            position:fixed;
+            bottom:16px;
+            right:16px;
+            min-width:220px;
+            max-width:min(92vw,360px);
+            padding:12px 14px;
+            border-radius:14px;
+            background:rgba(15,23,42,.96);
+            border:1px solid rgba(255,255,255,.10);
+            box-shadow:0 16px 42px rgba(0,0,0,.30);
+            color:#fff;
+            opacity:0;
+            transform:translateY(14px);
+            pointer-events:none;
+            transition:opacity .2s ease, transform .2s ease;
+            z-index:12000;
         }
 
-        .modal-overlay.closing {
-            opacity: 0;
+        .toast.show{opacity:1; transform:translateY(0)}
+        .toast.success{border-color:rgba(34,197,94,.30)}
+        .toast.error{border-color:rgba(239,68,68,.30)}
+        .toast .t1{display:block; font-size:13px; font-weight:800; margin-bottom:3px}
+        .toast .t2{display:block; font-size:12px; color:rgba(237,243,255,.75); line-height:1.45}
+
+        .loader{
+            position:fixed;
+            inset:0;
+            display:grid;
+            place-items:center;
+            background:rgba(7,16,29,.78);
+            backdrop-filter:blur(10px);
+            z-index:9999;
         }
 
-        .modal-overlay.closing .modal {
-            transform: translateY(18px) scale(.92);
-            opacity: 0;
+        .spinner{
+            width:52px;
+            height:52px;
+            border-radius:50%;
+            border:5px solid rgba(255,255,255,.16);
+            border-top-color:#7dd3fc;
+            animation:spin 1s linear infinite;
         }
 
-        .modal-head {
-            padding: 22px 22px 12px;
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
+        @keyframes spin { to { transform:rotate(360deg) } }
 
-        .warn-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 16px;
-            display: grid;
-            place-items: center;
-            background: rgba(239,68,68,.14);
-            border: 1px solid rgba(239,68,68,.22);
-            color: #fecaca;
-            font-size: 22px;
-            flex: 0 0 auto;
-        }
-
-        .modal-head h3 {
-            margin: 0;
-            font-size: 20px;
-        }
-
-        .modal-body {
-            padding: 0 22px 22px;
-            color: rgba(229,238,252,.78);
-            line-height: 1.7;
-        }
-
-        .modal-actions {
-            display: flex;
-            gap: 12px;
-            justify-content: flex-end;
-            padding: 0 22px 22px;
-            flex-wrap: wrap;
-        }
-
-        .modal-btn {
-            border: none;
-            border-radius: 14px;
-            padding: 12px 16px;
-            font-weight: 800;
-            cursor: pointer;
-            transition: transform .18s ease, opacity .18s ease;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal-btn:hover {
-            transform: translateY(-1px);
-        }
-
-        .modal-cancel {
-            background: rgba(255,255,255,.08);
-            color: #eff6ff;
-        }
-
-        .modal-confirm {
-            background: linear-gradient(135deg, #ef4444, #f97316);
-            color: #fff;
-        }
-
-        .toast {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            min-width: 240px;
-            max-width: min(92vw, 420px);
-            padding: 14px 16px;
-            border-radius: 16px;
-            background: rgba(15, 23, 42, .96);
-            border: 1px solid rgba(255,255,255,.10);
-            color: #fff;
-            box-shadow: 0 18px 50px rgba(0,0,0,.35);
-            opacity: 0;
-            transform: translateY(16px);
-            pointer-events: none;
-            transition: opacity .24s ease, transform .24s ease;
-            z-index: 12000;
-        }
-
-        .toast.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .toast.success {
-            border-color: rgba(34,197,94,.35);
-        }
-
-        .toast.error {
-            border-color: rgba(239,68,68,.35);
-        }
-
-        .toast .toast-title {
-            display: block;
-            font-size: 14px;
-            font-weight: 800;
-            margin-bottom: 4px;
-        }
-
-        .toast .toast-text {
-            display: block;
-            font-size: 13px;
-            color: rgba(229,238,252,.78);
-            line-height: 1.5;
-        }
-
-        @media (max-width: 1024px) {
-            .stats {
-                grid-template-columns: repeat(2, 1fr);
+        @media (max-width: 900px){
+            .page{padding:14px}
+            .hero{align-items:flex-start}
+            .toolbar{grid-template-columns:1fr}
+            .list-head, .item{
+                grid-template-columns:62px 1fr 128px 188px;
             }
-
-            .toolbar {
-                grid-template-columns: 1fr;
-            }
+            .name{font-size:14px}
         }
 
-        @media (max-width: 768px) {
-            .topbar {
-                padding: 18px 18px 16px;
+        @media (max-width: 640px){
+            .page{padding:10px}
+            .shell{border-radius:20px}
+            .topbar{padding:16px 16px 14px}
+            .content{padding:14px 14px 16px}
+            .hero h1{font-size:22px}
+            .hero p{font-size:13px; margin-top:5px}
+            .top-actions{width:100%}
+            .top-actions .btn{flex:1 1 0; padding:10px 12px; font-size:12px}
+            .summary{display:none}
+            .list-head{
+                display:grid;
+                grid-template-columns:54px 1fr 98px 112px;
+                padding:8px 10px;
+                font-size:11px;
+                letter-spacing:.5px;
             }
-
-            .content {
-                padding: 16px;
+            .item{
+                grid-template-columns:54px 1fr 98px 112px;
+                padding:10px 10px;
+                gap:8px;
             }
-
-            .bottom-bar {
-                padding: 14px 16px 18px;
-            }
-
-            .title h1 {
-                font-size: 24px;
-            }
-
-            .title p {
-                font-size: 13px;
-                margin-top: 6px;
-            }
-
-            .actions-top {
-                width: 100%;
-            }
-
-            .actions-top .btn {
-                flex: 1 1 0;
-                padding: 11px 14px;
-            }
-
-            .toolbar {
-                gap: 10px;
-                margin-bottom: 14px;
-            }
-
-            .search-box input,
-            .filter-box select {
-                padding: 12px 14px;
-                font-size: 14px;
-            }
-
-            .stats {
-                grid-template-columns: 1fr;
-                gap: 10px;
-                margin-bottom: 14px;
-            }
-
-            .stat-card {
-                padding: 13px 14px;
-                border-radius: 18px;
-            }
-
-            .stat-value {
-                font-size: 18px;
-            }
-
-            .table-shell {
-                border-radius: 20px;
-            }
-
-            .footer-card {
-                text-align: center;
-                justify-content: center;
-            }
-
-            .toast {
-                left: 14px;
-                right: 14px;
-                bottom: 14px;
-                min-width: 0;
-            }
+            .id-badge{width:46px; height:32px; border-radius:10px; font-size:12px}
+            .price{font-size:13px}
+            .btn-edit,.btn-delete{padding:7px 9px; min-height:32px; font-size:11px; border-radius:10px}
+            .actions{justify-content:flex-end; gap:6px}
+            .footer{padding:10px 14px 14px; justify-content:center; text-align:center}
+            .toast{left:10px; right:10px; bottom:10px; min-width:0}
         }
 
-        @media (max-width: 640px) {
-            .page {
-                padding: 12px;
+        @media (max-width: 420px){
+            .list-head, .item{
+                grid-template-columns:46px 1fr 86px 92px;
+                gap:6px;
             }
-
-            .card {
-                border-radius: 22px;
-            }
-
-            .topbar {
-                gap: 12px;
-            }
-
-            .title {
-                width: 100%;
-            }
-
-            .actions-top {
-                gap: 8px;
-            }
-
-            .actions-top .btn {
-                font-size: 13px;
-            }
-
-            .stats {
-                display: none;
-            }
-
-            .table-shell {
-                background: transparent;
-                border: none;
-                overflow: visible;
-            }
-
-            table {
-                min-width: 0;
-                width: 100%;
-                border-collapse: separate;
-                border-spacing: 0 12px;
-            }
-
-            thead {
-                display: none;
-            }
-
-            tbody {
-                display: block;
-            }
-
-            tbody tr {
-                display: block;
-                background: rgba(255,255,255,.05);
-                border: 1px solid rgba(255,255,255,.08);
-                border-radius: 18px;
-                padding: 12px 12px 6px;
-                margin-bottom: 12px;
-                box-shadow: 0 10px 22px rgba(0,0,0,.18);
-            }
-
-            tbody tr:hover td {
-                background: transparent;
-            }
-
-            tbody tr:nth-child(even) td {
-                background: transparent;
-            }
-
-            td {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                gap: 12px;
-                border: none;
-                border-top: 1px solid rgba(255,255,255,.08);
-                padding: 12px 0;
-                text-align: left;
-                font-size: 14px;
-                line-height: 1.45;
-            }
-
-            td:first-child {
-                border-top: none;
-                padding-top: 0;
-            }
-
-            td::before {
-                content: attr(data-label);
-                color: rgba(159,176,203,.92);
-                font-size: 12px;
-                font-weight: 700;
-                text-transform: uppercase;
-                letter-spacing: .5px;
-                flex: 0 0 auto;
-                margin-right: 10px;
-            }
-
-            td.actions-cell {
-                display: block;
-                padding-bottom: 2px;
-            }
-
-            td.actions-cell::before {
-                display: block;
-                margin: 0 0 10px;
-            }
-
-            .row-actions {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 10px;
-                width: 100%;
-            }
-
-            .row-actions .btn {
-                width: 100%;
-                padding: 12px 10px;
-            }
-
-            .empty {
-                display: block;
-                text-align: center;
-                padding: 20px 10px;
-            }
-
-            .empty strong {
-                margin-bottom: 6px;
-            }
+            .hero h1{font-size:21px}
+            .hero p{font-size:12px}
+            .btn{min-height:40px}
+            .top-actions .btn{font-size:11px}
+            .name{font-size:13px}
+            .price{font-size:12px}
         }
     </style>
 </head>
@@ -716,22 +530,24 @@
 <div class="loader" id="loader"><div class="spinner"></div></div>
 
 <div class="page">
-    <div class="card">
+    <div class="shell">
         <div class="topbar">
-            <div class="title">
-                <h1>Product List</h1>
-                <p>Manage your product catalog with a clean and smooth interface.</p>
-            </div>
-            <div class="actions-top">
-                <a class="btn btn-home" href="index.jsp">Home</a>
-                <a class="btn btn-add" href="addProduct.jsp">Add Product</a>
+            <div class="hero">
+                <div>
+                    <h1>Product List</h1>
+                    <p>Manage products in this Centralized Dashboard</p>
+                </div>
+                <div class="top-actions">
+                    <a class="btn btn-home" href="index.jsp">Home</a>
+                    <a class="btn btn-add" href="addProduct.jsp">Add Product</a>
+                </div>
             </div>
         </div>
 
         <div class="content">
             <div class="toolbar">
                 <div class="search-box">
-                    <input type="text" id="searchInput" placeholder="Search by product name..." onkeyup="filterProducts()">
+                    <input type="text" id="searchInput" placeholder="Search product..." onkeyup="filterProducts()">
                 </div>
                 <div class="filter-box">
                     <select id="sortSelect" onchange="sortProducts()">
@@ -744,88 +560,65 @@
                 </div>
             </div>
 
-            <div class="stats">
-                <div class="stat-card">
-                    <span class="stat-label">Total Products</span>
-                    <span class="stat-value" id="totalCount">0</span>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-label">Visible Products</span>
-                    <span class="stat-value" id="visibleCount">0</span>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-label">Highest Price</span>
-                    <span class="stat-value" id="highestPrice">₹ 0</span>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-label">Lowest Price</span>
-                    <span class="stat-value" id="lowestPrice">₹ 0</span>
-                </div>
+            <div class="summary">
+                <div class="chip">Total <span id="totalCount">0</span></div>
+                <div class="chip">Visible <span id="visibleCount">0</span></div>
+                <div class="chip">Highest <span id="highestPrice">₹ 0</span></div>
+                <div class="chip">Lowest <span id="lowestPrice">₹ 0</span></div>
             </div>
 
-            <div class="table-shell">
-                <table id="productTable">
-                    <thead>
-                        <tr>
-                            <th style="width: 12%;">ID</th>
-                            <th style="width: 38%;">Name</th>
-                            <th style="width: 20%;">Price</th>
-                            <th style="width: 30%;">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="productTableBody">
-                    <%
-                        ArrayList<Product> list = (ArrayList<Product>) request.getAttribute("products");
-                        if (list != null && !list.isEmpty()) {
-                            for (Product p : list) {
-                    %>
-                        <tr id="row-<%= p.getId() %>"
-                            data-name="<%= p.getName().toLowerCase() %>"
-                            data-price="<%= p.getPrice() %>">
-                            <td data-label="ID"><%= p.getId() %></td>
-                            <td data-label="Name" class="product-name"><%= p.getName() %></td>
-                            <td data-label="Price" class="product-price">&#8377; <%= p.getPrice() %></td>
-                            <td data-label="Actions" class="actions-cell">
-                                <div class="row-actions">
-                                    <a class="btn btn-edit" href="editProduct.do?id=<%= p.getId() %>">Edit</a>
-                                    <a class="btn btn-delete" href="#" onclick="openDeleteModal('<%= p.getId() %>'); return false;">Delete</a>
-                                </div>
-                            </td>
-                        </tr>
-                    <%
-                            }
-                        } else {
-                    %>
-                        <tr id="emptyRow">
-                            <td colspan="4" class="empty">
-                                <strong>No products available</strong>
-                                Start by adding your first product.
-                            </td>
-                        </tr>
-                    <%
+            <div class="list-head">
+                <div>ID</div>
+                <div>Product</div>
+                <div>Price</div>
+                <div style="text-align:right;">Actions</div>
+            </div>
+
+            <div class="list" id="productList">
+                <div id="productTableBody">
+                <%
+                    ArrayList<Product> list = (ArrayList<Product>) request.getAttribute("products");
+                    if (list != null && !list.isEmpty()) {
+                        for (Product p : list) {
+                %>
+                    <div class="item" id="row-<%= p.getId() %>"
+                         data-name="<%= p.getName().toLowerCase() %>"
+                         data-price="<%= p.getPrice() %>">
+                        <div class="id-badge" data-label="ID"><%= p.getId() %></div>
+                        <div class="name" data-label="Product"><%= p.getName() %></div>
+                        <div class="price" data-label="Price"><span class="sym">₹</span><span><%= p.getPrice() %></span></div>
+                        <div class="actions" data-label="Actions">
+                            <a class="btn btn-edit" href="editProduct.do?id=<%= p.getId() %>">Edit</a>
+                            <a class="btn btn-delete" href="#" onclick="openDeleteModal('<%= p.getId() %>'); return false;">Delete</a>
+                        </div>
+                    </div>
+                <%
                         }
-                    %>
-                    </tbody>
-                </table>
+                    } else {
+                %>
+                    <div id="emptyRow" class="empty">
+                        <strong>No products available</strong>
+                        Start by adding your first product.
+                    </div>
+                <%
+                    }
+                %>
+                </div>
             </div>
         </div>
 
-        <div class="bottom-bar">
-            <div class="footer-card">
-                <div>Project designed by Pratik N Chakraborty</div>
-                <div>Struts Product Catalog</div>
-            </div>
+        <div class="footer">
+            <div>Project designed by Pratik N Chakraborty</div>
+            <div>Struts Product Catalog</div>
         </div>
     </div>
 </div>
 
 <div class="modal-overlay" id="deleteModal" aria-hidden="true">
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="deleteTitle">
-        <div class="modal-head">
-            <div class="warn-icon">!</div>
-            <div>
-                <h3 id="deleteTitle">Delete product?</h3>
-            </div>
+        <div class="modal-top">
+            <div class="warn">!</div>
+            <div><h3 id="deleteTitle">Delete product?</h3></div>
         </div>
         <div class="modal-body">
             This action will remove the selected product from the catalog.
@@ -839,8 +632,8 @@
 </div>
 
 <div id="toast" class="toast" aria-live="polite" aria-atomic="true">
-    <span class="toast-title" id="toastTitle">Status</span>
-    <span class="toast-text" id="toastText"></span>
+    <span class="t1" id="toastTitle">Status</span>
+    <span class="t2" id="toastText"></span>
 </div>
 
 <script>
@@ -851,7 +644,6 @@
     const toastText = document.getElementById('toastText');
 
     let toastTimer = null;
-    let currentSort = 'default';
 
     function showToast(title, message, type) {
         toast.className = 'toast ' + (type || 'success');
@@ -860,9 +652,7 @@
         toast.classList.add('show');
 
         clearTimeout(toastTimer);
-        toastTimer = setTimeout(() => {
-            toast.classList.remove('show');
-        }, 2600);
+        toastTimer = setTimeout(() => toast.classList.remove('show'), 2400);
     }
 
     function openDeleteModal(id) {
@@ -875,35 +665,29 @@
     function closeDeleteModal() {
         deleteModal.classList.add('closing');
         deleteModal.setAttribute('aria-hidden', 'true');
-        setTimeout(() => {
-            deleteModal.classList.remove('show', 'closing');
-        }, 300);
+        setTimeout(() => deleteModal.classList.remove('show', 'closing'), 250);
     }
 
     async function deleteProduct(id) {
         try {
             const response = await fetch('deleteProduct.do?id=' + encodeURIComponent(id), {
                 method: 'GET',
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
             });
 
-            if (!response.ok) {
-                throw new Error('Delete failed');
-            }
+            if (!response.ok) throw new Error('Delete failed');
 
             const row = document.getElementById('row-' + id);
             if (row) {
-                row.style.transition = 'opacity .25s ease, transform .25s ease';
+                row.style.transition = 'opacity .22s ease, transform .22s ease';
                 row.style.opacity = '0';
-                row.style.transform = 'translateY(8px)';
-                setTimeout(() => row.remove(), 260);
+                row.style.transform = 'translateY(6px)';
+                setTimeout(() => row.remove(), 220);
             }
 
             showToast('Deleted', 'Product removed successfully.', 'success');
-            updateStats();
             closeDeleteModal();
+            updateStats();
             checkEmptyState();
         } catch (e) {
             showToast('Error', 'Could not delete the product.', 'error');
@@ -915,116 +699,79 @@
         const href = confirmDeleteBtn.getAttribute('href');
         const idMatch = href.match(/id=([^&]+)/);
         const id = idMatch ? decodeURIComponent(idMatch[1]) : null;
-        if (id) {
-            deleteProduct(id);
-        }
+        if (id) deleteProduct(id);
     });
 
     deleteModal.addEventListener('click', function (e) {
-        if (e.target === deleteModal) {
-            closeDeleteModal();
-        }
+        if (e.target === deleteModal) closeDeleteModal();
     });
 
     window.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape' && deleteModal.classList.contains('show')) {
-            closeDeleteModal();
-        }
+        if (e.key === 'Escape' && deleteModal.classList.contains('show')) closeDeleteModal();
     });
 
     function filterProducts() {
         const query = document.getElementById('searchInput').value.toLowerCase().trim();
-        const rows = Array.from(document.querySelectorAll('#productTableBody tr'))
-            .filter(r => r.id !== 'emptyRow');
-
+        const items = Array.from(document.querySelectorAll('#productTableBody .item'));
         let visible = 0;
 
-        rows.forEach(row => {
-            const name = (row.dataset.name || '').toLowerCase();
+        items.forEach(item => {
+            const name = (item.dataset.name || '').toLowerCase();
             const match = name.includes(query);
-            row.style.display = match ? '' : 'none';
+            item.style.display = match ? '' : 'none';
             if (match) visible++;
         });
 
         const emptyRow = document.getElementById('emptyRow');
-        if (emptyRow) {
-            emptyRow.style.display = visible === 0 ? '' : 'none';
-        }
+        if (emptyRow) emptyRow.style.display = visible === 0 ? '' : 'none';
 
         document.getElementById('visibleCount').textContent = visible;
     }
 
     function sortProducts() {
-        currentSort = document.getElementById('sortSelect').value;
+        const value = document.getElementById('sortSelect').value;
+        const container = document.getElementById('productTableBody');
+        const items = Array.from(container.querySelectorAll('.item'));
 
-        const tbody = document.getElementById('productTableBody');
-        const rows = Array.from(tbody.querySelectorAll('tr')).filter(r => r.id !== 'emptyRow');
-
-        const compareByName = (a, b, asc) => {
+        const byName = (a, b, asc) => {
             const av = (a.dataset.name || '').toLowerCase();
             const bv = (b.dataset.name || '').toLowerCase();
             return asc ? av.localeCompare(bv) : bv.localeCompare(av);
         };
 
-        const compareByPrice = (a, b, asc) => {
+        const byPrice = (a, b, asc) => {
             const av = parseFloat(a.dataset.price || '0');
             const bv = parseFloat(b.dataset.price || '0');
             return asc ? av - bv : bv - av;
         };
 
-        if (currentSort === 'name-asc') rows.sort((a, b) => compareByName(a, b, true));
-        if (currentSort === 'name-desc') rows.sort((a, b) => compareByName(a, b, false));
-        if (currentSort === 'price-asc') rows.sort((a, b) => compareByPrice(a, b, true));
-        if (currentSort === 'price-desc') rows.sort((a, b) => compareByPrice(a, b, false));
+        if (value === 'name-asc') items.sort((a,b) => byName(a,b,true));
+        if (value === 'name-desc') items.sort((a,b) => byName(a,b,false));
+        if (value === 'price-asc') items.sort((a,b) => byPrice(a,b,true));
+        if (value === 'price-desc') items.sort((a,b) => byPrice(a,b,false));
 
-        rows.forEach(row => tbody.appendChild(row));
+        items.forEach(item => container.appendChild(item));
         filterProducts();
     }
 
     function updateStats() {
-        const allRows = Array.from(document.querySelectorAll('#productTableBody tr'))
-            .filter(r => r.id !== 'emptyRow' && r.style.display !== 'none');
+        const allItems = Array.from(document.querySelectorAll('#productTableBody .item'));
+        const visibleItems = allItems.filter(item => item.style.display !== 'none');
+        const prices = allItems.map(item => parseFloat(item.dataset.price || '0')).filter(n => !isNaN(n));
 
-        const allVisibleRows = Array.from(document.querySelectorAll('#productTableBody tr'))
-            .filter(r => r.id !== 'emptyRow');
-
-        const visibleCount = allRows.length;
-        const totalCount = allVisibleRows.length;
-
-        const prices = allVisibleRows
-            .map(r => parseFloat(r.dataset.price || '0'))
-            .filter(n => !isNaN(n));
-
-        const highest = prices.length ? Math.max(...prices) : 0;
-        const lowest = prices.length ? Math.min(...prices) : 0;
-
-        document.getElementById('totalCount').textContent = totalCount;
-        document.getElementById('visibleCount').textContent = visibleCount;
-        document.getElementById('highestPrice').textContent = '₹ ' + highest.toFixed(2);
-        document.getElementById('lowestPrice').textContent = '₹ ' + lowest.toFixed(2);
+        document.getElementById('totalCount').textContent = allItems.length;
+        document.getElementById('visibleCount').textContent = visibleItems.length;
+        document.getElementById('highestPrice').textContent = '₹ ' + (prices.length ? Math.max(...prices).toFixed(2) : '0.00');
+        document.getElementById('lowestPrice').textContent = '₹ ' + (prices.length ? Math.min(...prices).toFixed(2) : '0.00');
     }
 
     function checkEmptyState() {
-        const rows = Array.from(document.querySelectorAll('#productTableBody tr'))
-            .filter(r => r.id !== 'emptyRow' && r.style.display !== 'none');
+        const items = Array.from(document.querySelectorAll('#productTableBody .item'));
+        const visibleItems = items.filter(item => item.style.display !== 'none');
+        const emptyRow = document.getElementById('emptyRow');
 
-        let emptyRow = document.getElementById('emptyRow');
-
-        if (rows.length === 0) {
-            if (!emptyRow) {
-                const tbody = document.getElementById('productTableBody');
-                emptyRow = document.createElement('tr');
-                emptyRow.id = 'emptyRow';
-                emptyRow.innerHTML = `
-                    <td colspan="4" class="empty">
-                        <strong>No products available</strong>
-                        Start by adding your first product.
-                    </td>
-                `;
-                tbody.appendChild(emptyRow);
-            } else {
-                emptyRow.style.display = '';
-            }
+        if (visibleItems.length === 0) {
+            if (emptyRow) emptyRow.style.display = '';
         } else if (emptyRow) {
             emptyRow.style.display = 'none';
         }
@@ -1034,8 +781,8 @@
         const loader = document.getElementById('loader');
         loader.style.opacity = '0';
         loader.style.pointerEvents = 'none';
-        loader.style.transition = 'opacity .35s ease';
-        setTimeout(() => loader.remove(), 350);
+        loader.style.transition = 'opacity .3s ease';
+        setTimeout(() => loader.remove(), 300);
 
         updateStats();
         filterProducts();

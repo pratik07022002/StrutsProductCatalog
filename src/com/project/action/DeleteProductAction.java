@@ -25,6 +25,10 @@ public class DeleteProductAction extends Action {
         dao.deleteProduct(id);
 
         request.setAttribute("products", dao.getAllProducts());
+        request.setAttribute("toastTitle", "Deleted");
+        request.setAttribute("toastMessage", "Product deleted successfully.");
+        request.setAttribute("toastType", "success");
+
         return mapping.findForward("success");
     }
 }

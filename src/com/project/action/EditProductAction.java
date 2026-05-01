@@ -26,6 +26,8 @@ public class EditProductAction extends Action {
         Product product = dao.getProductById(id);
 
         request.setAttribute("product", product);
+        request.setAttribute("editInfo", "Edit mode active. Update the fields and save the changes.");
+
         return mapping.findForward("success");
     }
 }

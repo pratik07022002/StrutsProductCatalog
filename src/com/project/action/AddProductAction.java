@@ -15,8 +15,8 @@ public class AddProductAction extends Action {
                                  HttpServletResponse response) {
 
         String name = request.getParameter("name");
-        double price = 0;
 
+        double price = 0;
         try {
             price = Double.parseDouble(request.getParameter("price"));
         } catch (Exception e) {
@@ -27,6 +27,10 @@ public class AddProductAction extends Action {
         dao.addProduct(name, price);
 
         request.setAttribute("products", dao.getAllProducts());
+        request.setAttribute("toastTitle", "Added");
+        request.setAttribute("toastMessage", "Product added successfully.");
+        request.setAttribute("toastType", "success");
+
         return mapping.findForward("success");
     }
 }

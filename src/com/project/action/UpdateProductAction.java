@@ -22,8 +22,8 @@ public class UpdateProductAction extends Action {
         }
 
         String name = request.getParameter("name");
-        double price = 0;
 
+        double price = 0;
         try {
             price = Double.parseDouble(request.getParameter("price"));
         } catch (Exception e) {
@@ -34,6 +34,10 @@ public class UpdateProductAction extends Action {
         dao.updateProduct(id, name, price);
 
         request.setAttribute("products", dao.getAllProducts());
+        request.setAttribute("toastTitle", "Updated");
+        request.setAttribute("toastMessage", "Product updated successfully.");
+        request.setAttribute("toastType", "success");
+
         return mapping.findForward("success");
     }
 }
