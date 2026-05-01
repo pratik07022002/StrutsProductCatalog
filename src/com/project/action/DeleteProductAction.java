@@ -1,11 +1,10 @@
 package com.project.action;
 
-import javax.servlet.http.*;
+import com.project.dao.ProductDAO;
 import org.apache.struts.action.*;
-import java.util.Iterator;
-import java.util.List;
 
-import com.project.model.Product;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 public class DeleteProductAction extends Action {
 
@@ -15,25 +14,17 @@ public class DeleteProductAction extends Action {
                                  HttpServletRequest request,
                                  HttpServletResponse response) {
 
-        HttpSession session = request.getSession();
-        List<Product> list = (List<Product>) session.getAttribute("products");
-
-        if (list != null) {
-            int id = Integer.parseInt(request.getParameter("id"));
-
-            Iterator<Product> iterator = list.iterator();
-            while (iterator.hasNext()) {
-                Product p = iterator.next();
-                if (p.getId() == id) {
-                    iterator.remove();
-                    break;
-                }
-            }
-
-            session.setAttribute("products", list);
-            request.setAttribute("products", list);
+        int id = 0;
+        try {
+            id = Integer.parseInt(request.getParameter("id"));
+        } catch (Exception e) {
+            id = 0;
         }
 
+        ProductDAO dao = new ProductDAO();
+        dao.deleteProduct(id);
+
+        request.setAttribute("products", dao.getAllProducts());
         return mapping.findForward("success");
     }
 }

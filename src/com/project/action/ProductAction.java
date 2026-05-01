@@ -1,13 +1,12 @@
 package com.project.action;
 
-import javax.servlet.http.*;
-import org.apache.struts.action.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.sql.Connection;
-
+import com.project.dao.ProductDAO;
 import com.project.model.Product;
-import com.project.util.DBConnection;
+import org.apache.struts.action.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 public class ProductAction extends Action {
 
@@ -17,32 +16,12 @@ public class ProductAction extends Action {
                                  HttpServletRequest request,
                                  HttpServletResponse response) {
 
-        // ✅ DB CONNECTION TEST
-        Connection con = DBConnection.getConnection();
+        ProductDAO dao = new ProductDAO();
+        dao.seedDefaultProductsIfEmpty();
 
-        if (con == null) {
-            System.out.println("DB Connection FAILED");
-        } else {
-            System.out.println("DB Connection SUCCESS");
-        }
-
-        // existing session logic (temporary)
-        HttpSession session = request.getSession();
-
-        List<Product> list = (List<Product>) session.getAttribute("products");
-
-        if (list == null) {
-            list = new ArrayList<>();
-
-            list.add(new Product(1, "Laptop", 50000));
-            list.add(new Product(2, "Mobile", 20000));
-            list.add(new Product(3, "Headphones", 2000));
-
-            session.setAttribute("products", list);
-            session.setAttribute("nextProductId", 4);
-        }
-
+        List<Product> list = dao.getAllProducts();
         request.setAttribute("products", list);
+
         return mapping.findForward("success");
     }
 }

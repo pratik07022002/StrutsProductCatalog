@@ -1,10 +1,10 @@
 package com.project.action;
 
-import javax.servlet.http.*;
+import com.project.dao.ProductDAO;
 import org.apache.struts.action.*;
-import java.util.List;
 
-import com.project.model.Product;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 public class UpdateProductAction extends Action {
 
@@ -14,32 +14,26 @@ public class UpdateProductAction extends Action {
                                  HttpServletRequest request,
                                  HttpServletResponse response) {
 
-        HttpSession session = request.getSession();
-        List<Product> list = (List<Product>) session.getAttribute("products");
-
-        if (list != null) {
-            int id = Integer.parseInt(request.getParameter("id"));
-            String name = request.getParameter("name");
-
-            double price = 0;
-            try {
-                price = Double.parseDouble(request.getParameter("price"));
-            } catch (Exception e) {
-                price = 0;
-            }
-
-            for (Product p : list) {
-                if (p.getId() == id) {
-                    p.setName(name);
-                    p.setPrice(price);
-                    break;
-                }
-            }
-
-            session.setAttribute("products", list);
-            request.setAttribute("products", list);
+        int id = 0;
+        try {
+            id = Integer.parseInt(request.getParameter("id"));
+        } catch (Exception e) {
+            id = 0;
         }
 
+        String name = request.getParameter("name");
+        double price = 0;
+
+        try {
+            price = Double.parseDouble(request.getParameter("price"));
+        } catch (Exception e) {
+            price = 0;
+        }
+
+        ProductDAO dao = new ProductDAO();
+        dao.updateProduct(id, name, price);
+
+        request.setAttribute("products", dao.getAllProducts());
         return mapping.findForward("success");
     }
 }

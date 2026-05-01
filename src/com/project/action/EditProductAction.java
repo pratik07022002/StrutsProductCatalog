@@ -1,10 +1,11 @@
 package com.project.action;
 
-import javax.servlet.http.*;
-import org.apache.struts.action.*;
-import java.util.List;
-
+import com.project.dao.ProductDAO;
 import com.project.model.Product;
+import org.apache.struts.action.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 public class EditProductAction extends Action {
 
@@ -14,23 +15,17 @@ public class EditProductAction extends Action {
                                  HttpServletRequest request,
                                  HttpServletResponse response) {
 
-        HttpSession session = request.getSession();
-        List<Product> list = (List<Product>) session.getAttribute("products");
-
-        if (list != null) {
-            String idStr = request.getParameter("id");
-            if (idStr != null) {
-                int id = Integer.parseInt(idStr);
-
-                for (Product p : list) {
-                    if (p.getId() == id) {
-                        request.setAttribute("product", p);
-                        break;
-                    }
-                }
-            }
+        int id = 0;
+        try {
+            id = Integer.parseInt(request.getParameter("id"));
+        } catch (Exception e) {
+            id = 0;
         }
 
+        ProductDAO dao = new ProductDAO();
+        Product product = dao.getProductById(id);
+
+        request.setAttribute("product", product);
         return mapping.findForward("success");
     }
 }
