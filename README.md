@@ -1,227 +1,428 @@
 # Struts Product Catalog (Mini Project)
 
-## Overview
-
-This is a Java-based web application built using **Apache Struts (MVC architecture)** with **Servlets and JSP**.
-
-The application allows users to:
+A Java web application built with **Apache Struts 1**, **JSP**, **Servlets**, **MySQL**, and **Tomcat 9**. The project supports a modern product catalog interface with:
 
 * View products
-* Add new products
-* Edit existing products
+* Add products
+* Edit products
 * Delete products
-
-All data is stored in **session memory** (no database is used).
+* Search and sort products
+* Toast notifications
+* Responsive mobile-friendly UI
+* Animated delete confirmation modal
 
 ---
 
-## Tech Stack
+## Project Overview
 
-* Java (JDK 11 recommended)
-* Apache Tomcat 9
+This project is a **CRUD-based mini project** using the MVC architecture.
+
+### Architecture
+
+* **Model**: `Product.java`
+* **View**: JSP pages
+* **Controller**: Struts Actions
+* **Database**: MySQL
+* **Server**: Apache Tomcat 9
+
+---
+
+## Main Features
+
+* Modern responsive UI
+* Product listing with search and sort
+* Add new product
+* Update existing product
+* Delete product with animated confirmation popup
+* Toast messages after actions
+* Smooth loading animation
+* Shared MySQL database support
+
+---
+
+## Technologies Used
+
+* Java 11
+* Apache Tomcat 9.0.117
 * Apache Struts 1.3
-* JSP & Servlet
-* HTML, CSS (custom modern UI)
+* MySQL 9.x / MySQL 8.x compatible JDBC
+* JSP
+* Servlet
+* HTML5
+* CSS3
+* JavaScript
 
 ---
 
 ## Project Structure
 
-```
+```text
 StrutsProductCatalog/
-├── index.jsp
 ├── addProduct.jsp
 ├── editProduct.jsp
+├── index.jsp
 ├── products.jsp
-├── WEB-INF/
-│   ├── web.xml
-│   ├── struts-config.xml
-│   ├── lib/ (all required JAR files)
-│   └── classes/ (compiled .class files)
-├── src/ (Java source code)
+├── README.md
+├── db/
+│   └── productdb.sql
+├── src/
+│   └── com/
+│       └── project/
+│           ├── action/
+│           ├── dao/
+│           ├── model/
+│           └── util/
+└── WEB-INF/
+    ├── classes/
+    ├── lib/
+    ├── struts-config.xml
+    └── web.xml
 ```
 
 ---
 
-## Requirements (IMPORTANT)
+## Required Software
 
-Before running the project, make sure you have:
+Before running the project, install the following:
 
-1. Java Installed
-   Check:
-
-   ```
-   java -version
-   ```
-
-   Recommended: Java 11
-
-2. Apache Tomcat Installed
-   Recommended: Tomcat 9
-
-3. Environment Variables (optional but recommended)
-
-   * JAVA_HOME → path to JDK
-   * PATH → include Java bin folder
+1. **Java JDK 11**
+2. **Apache Tomcat 9**
+3. **MySQL Server**
+4. **MySQL JDBC Connector JAR**
+5. **Git** (optional, only for cloning/pushing project)
 
 ---
 
-## How to Run the Project
+## Important Files
 
-### Option 1: Using WAR file (Easiest)
+### Java files
 
-1. Copy the `.war` file into:
+* `DBConnection.java` → database connection
+* `ProductDAO.java` → database CRUD logic
+* `Product.java` → model class
+* `ProductAction.java` → loads products
+* `AddProductAction.java` → inserts product
+* `EditProductAction.java` → fetches product for editing
+* `UpdateProductAction.java` → updates product
+* `DeleteProductAction.java` → deletes product
 
-   ```
-   apache-tomcat/webapps/
-   ```
+### JSP files
 
-2. Start Tomcat:
-
-   ```
-   cd apache-tomcat/bin
-   catalina.bat run
-   ```
-
-3. Open browser:
-
-   ```
-   http://localhost:8080/StrutsProductCatalog/
-   ```
+* `index.jsp` → home page
+* `products.jsp` → product list page
+* `addProduct.jsp` → add product page
+* `editProduct.jsp` → edit product page
 
 ---
 
-### Option 2: Using Project Folder
+## Database Setup
 
-1. Copy full project folder:
+### Database Name
 
-   ```
-   StrutsProductCatalog
-   ```
+```sql
+productdb
+```
 
-   into:
+### Table Name
 
-   ```
-   apache-tomcat/webapps/
-   ```
+```sql
+products
+```
 
-2. Start Tomcat:
+### Table Structure
 
-   ```
-   catalina.bat run
-   ```
-
-3. Open:
-
-   ```
-   http://localhost:8080/StrutsProductCatalog/
-   ```
+```sql
+CREATE TABLE products (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
+    price DOUBLE NOT NULL
+);
+```
 
 ---
 
-## Features
+## SQL File for Setup
 
-* Add Product
-  Add new products with name and price
+A database dump file is included in:
 
-* View Products
-  Displays all products in a styled table
+```text
+db/productdb.sql
+```
 
-* Edit Product
-  Update product details
+This file contains:
 
-* Delete Product
-  Uses a modern animated confirmation popup
-
-* Modern UI
-  Glassmorphism design with animations and loader
+* table structure
+* sample/default data
 
 ---
 
-## Important Notes
+## How to Import the Database
 
-* Data is stored in **session only**
+### Option 1: Using MySQL Command Line
 
-  * Refresh → data remains
-  * Restart server → data is lost
+1. Open Command Prompt
+2. Login to MySQL:
 
-* No database is used (intentionally for mini project)
+```bash
+mysql -u root -p
+```
 
-* Make sure:
+3. Create the database:
 
-  * All `.do` URLs are used (not `.jsp` directly)
-  * JAR files exist in `WEB-INF/lib`
-  * `.class` files exist in `WEB-INF/classes`
+```sql
+CREATE DATABASE productdb;
+```
+
+4. Exit MySQL:
+
+```sql
+exit;
+```
+
+5. Import the SQL file from the project folder:
+
+```bash
+mysql -u root -p productdb < db/productdb.sql
+```
 
 ---
 
-## Common Issues & Fixes
+### Option 2: Using MySQL Workbench
+
+1. Open MySQL Workbench
+2. Open SQL File or Data Import
+3. Select `db/productdb.sql`
+4. Run the import
+
+---
+
+## DBConnection Configuration
+
+Open:
+
+```text
+src/com/project/util/DBConnection.java
+```
+
+Update these values if needed:
+
+```java
+private static final String URL = "jdbc:mysql://localhost:3306/productdb?useSSL=false&serverTimezone=UTC";
+private static final String USER = "root";
+private static final String PASSWORD = "your_password_here";
+```
+
+### Important
+
+* `productdb` must exist in MySQL
+* Username and password must match your local MySQL setup
+* If you share this project with someone else, they must update their own password in `DBConnection.java`
+
+---
+
+## MySQL Connector JAR
+
+The following JAR must be placed in:
+
+```text
+WEB-INF/lib/
+```
+
+Required file:
+
+```text
+mysql-connector-j-8.x.x.jar
+```
+
+Without this, JDBC connection will fail.
+
+---
+
+## How to Run the Project Locally
+
+### Step 1: Copy project to Tomcat webapps folder
+
+Place the project folder inside:
+
+```text
+E:\apache-tomcat-9.0.117\webapps\
+```
+
+The application folder should be:
+
+```text
+StrutsProductCatalog
+```
+
+---
+
+### Step 2: Compile Java files
+
+Run these commands inside the project folder:
+
+```bash
+javac -d WEB-INF/classes src/com/project/util/DBConnection.java
+javac -d WEB-INF/classes src/com/project/model/Product.java
+javac -cp "WEB-INF/classes;WEB-INF/lib/*" -d WEB-INF/classes src/com/project/dao/ProductDAO.java
+javac -cp "WEB-INF/classes;WEB-INF/lib/*;E:\apache-tomcat-9.0.117\lib\servlet-api.jar" -d WEB-INF/classes src/com/project/action/*.java
+```
+
+---
+
+### Step 3: Start Tomcat
+
+Open Command Prompt and run:
+
+```bash
+cd E:\apache-tomcat-9.0.117\bin
+.\catalina.bat run
+```
+
+---
+
+### Step 4: Open the project in browser
+
+Use this URL:
+
+```text
+http://localhost:8080/StrutsProductCatalog/
+```
+
+Or open directly:
+
+```text
+http://localhost:8080/StrutsProductCatalog/products.do
+```
+
+---
+
+## How to Use the Application
+
+### View Products
+
+Open the home page or `products.do` to see the product list.
+
+### Add Product
+
+Click **Add Product**, enter name and price, then submit.
+
+### Edit Product
+
+Click **Edit** beside a product, update fields, and save.
+
+### Delete Product
+
+Click **Delete**, confirm in the popup, and the product will be removed.
+
+### Search and Sort
+
+Use the search box and sorting dropdown on the product page.
+
+---
+
+## Mobile-Friendly Design
+
+The UI is optimized for:
+
+* mobile browsers
+* tablets
+* desktop screens
+
+Responsive features include:
+
+* compact spacing
+* adaptive buttons
+* cleaner list layout
+* scroll-friendly design
+* mobile-safe input fields
+
+---
+
+## GitHub Setup
+
+### Clone the repository
+
+```bash
+git clone <your-repository-url>
+```
+
+### Commit changes
+
+```bash
+git add .
+git commit -m "your message"
+git push origin main
+```
+
+---
+
+## Sharing With Another Person
+
+If another person wants to run this project on their PC, they need:
+
+* Java 11
+* Tomcat 9
+* MySQL
+* JDBC connector JAR
+* the project code
+* `db/productdb.sql`
+* their own MySQL username/password in `DBConnection.java`
+
+### Important
+
+GitHub does **not** transfer your installed MySQL server or your local database automatically. The `.sql` file must be imported on their machine.
+
+---
+
+## Common Problems and Fixes
 
 ### 1. 404 Error
 
-* Check URL:
+* Check Tomcat is running
+* Check the URL is correct
+* Make sure the app folder name is `StrutsProductCatalog`
 
-  ```
-  http://localhost:8080/StrutsProductCatalog/products.do
-  ```
+### 2. Database Connection Failed
 
-### 2. Class Not Found Error
+* Check MySQL is running
+* Check database name is `productdb`
+* Check username/password in `DBConnection.java`
+* Check JDBC connector JAR exists in `WEB-INF/lib`
 
-* Make sure `.class` files are compiled properly
+### 3. JSP Compilation Error
 
-### 3. Struts Errors
+* Check the JSP syntax carefully
+* Restart Tomcat after editing files
+* Recompile Java files if needed
 
-* Ensure JAR files are present in:
+### 4. Delete/Add/Update Not Working
 
-  ```
-  WEB-INF/lib
-  ```
-
-### 4. Changes Not Reflecting
-
-* Restart Tomcat after changes
-
----
-
-## Compilation (if editing Java code)
-
-Run inside project folder:
-
-```
-javac -cp "WEB-INF/classes;WEB-INF/lib/*;TOMCAT/lib/servlet-api.jar" -d WEB-INF/classes src/com/project/action/*.java
-```
-
-Replace `TOMCAT` with your actual Tomcat path.
+* Check the action mappings in `struts-config.xml`
+* Check DAO methods are updated correctly
+* Restart Tomcat after code changes
 
 ---
 
-## Project Details
+## Notes
 
-Project Name: Struts Product Catalog (Mini Project)
-Architecture: MVC (Struts Framework)
-
----
-
-## Credits
-
-Project Designed by Pratik N Chakraborty
-© April 2026
+* This project uses **MySQL database**, not session-based storage.
+* Product data is shared by all users who connect to the same database.
+* If your friend uses their own MySQL database, they may see different data unless they import the same SQL file.
 
 ---
 
-## Final Note
+## Author / Credit
 
-This project is designed for learning purposes to understand:
-
-* Struts MVC flow
-* Session handling
-* JSP + Servlet integration
-* Basic CRUD operations
-
-For real-world use, you should:
-
-* Add database (MySQL)
-* Add validation
-* Add authentication system
+Project designed by **Pratik N Chakraborty**
 
 ---
+
+## Version
+
+Current version: 1.0
+
+---
+
+## License
+
+This is a mini project for learning and academic use.

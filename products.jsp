@@ -618,7 +618,7 @@
         </div>
 
         <div class="footer">
-            <div>Project designed by Pratik N Chakraborty</div>
+            <div>Project designed by Pratik Narayan Chakraborty</div>
             <div>Struts Product Catalog</div>
         </div>
     </div>

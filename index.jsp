@@ -191,7 +191,7 @@
         <span class="badge">Struts Product Catalog (Mini Project)</span>
         <h1>Product Catalog</h1>
         <p class="lead">
-            A modern Struts MVC mini project built with Servlet, JSP, and session-based storage.
+            A modern Struts MVC mini project built with Servlet, JSP, and connected database storage.
             Manage products with a clean interface and simple workflow.
         </p>
 
@@ -201,7 +201,7 @@
         </div>
 
         <footer>
-            <div>Project Designed by Pratik N Chakraborty</div>
+            <div>Project Designed by Pratik Narayan Chakraborty</div>
             <div>&copy; April 2026</div>
         </footer>
     </section>
